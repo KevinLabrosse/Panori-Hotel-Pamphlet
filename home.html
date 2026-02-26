@@ -127,9 +127,10 @@
            SHARED SLIDE COMPONENTS
         ══════════════════════════════ */
         .slide-inner {
-            max-width: 960px;
+            max-width: 1400px;
+            width: 82%;
             margin: 0 auto;
-            padding: 60px 48px 100px;
+            padding: 60px 0 100px;
         }
 
         .slide-label {
@@ -230,18 +231,19 @@
             border-radius: 10px;
             border-left: 3px solid var(--gold);
             box-shadow: 0 2px 12px rgba(15,31,46,0.06);
+            line-height: 1.4;
         }
         .pill-item strong {
             display: block;
             font-size: 0.88rem;
             font-weight: 600;
             color: var(--navy);
-            margin-bottom: 2px;
+            margin-bottom: 1px;
         }
         .pill-item span {
             font-size: 0.82rem;
             color: var(--slate);
-            line-height: 1.5;
+            line-height: 1.4;
         }
 
         /* Stats row */
@@ -335,11 +337,12 @@
             letter-spacing: 0.15em;
             text-transform: uppercase;
             color: var(--gold);
-            margin-bottom: 6px;
+            margin-bottom: 3px;
+            line-height: 1;
         }
         .infra-block p {
             font-size: 0.93rem;
-            line-height: 1.7;
+            line-height: 1.55;
             color: #2E3E4A;
         }
         .infra-block strong { color: var(--navy); }
@@ -353,22 +356,21 @@
             gap: 10px;
         }
         .why-list li {
-            display: flex;
-            align-items: flex-start;
-            gap: 12px;
+            position: relative;
+            padding: 0 0 0 20px;
             font-size: 0.92rem;
             color: #2E3E4A;
             line-height: 1.5;
         }
         .why-list li::before {
             content: '';
-            display: inline-block;
+            position: absolute;
+            left: 0;
+            top: 7px;
             width: 8px;
             height: 8px;
             border-radius: 50%;
             background: var(--gold);
-            flex-shrink: 0;
-            margin-top: 6px;
         }
         .why-list li strong { color: var(--navy); font-weight: 600; }
 
@@ -479,7 +481,7 @@
             #slideshow { height: auto; overflow: visible; }
             .slide { position: relative; opacity: 1; pointer-events: all; transform: none; display: none; }
             .slide.active { display: block; }
-            .slide-inner { padding: 48px 24px 90px; }
+            .slide-inner { padding: 48px 0 90px; width: 90%; }
             .hero-layout, .two-col { grid-template-columns: 1fr; }
             .hero-img-grid { grid-template-rows: 180px 130px; }
             .three-col { grid-template-columns: 1fr; }
@@ -723,10 +725,10 @@
 
                     <ul class="why-list">
                         <li><strong>Emerging energy &amp; logistics hub:</strong>&nbsp;EACOP pipeline, port expansion</li>
-                        <li><strong>Industrial demand</strong>&nbsp;fuelling long-stay business professional needs</li>
-                        <li><strong>Growing tourism:</strong>&nbsp;parks, beaches, caves, heritage sites</li>
+                        <li><strong>Industrial demand:</strong>&nbsp;Fuelling long-stay business professional needs</li>
+                        <li><strong>Growing tourism:</strong>&nbsp;Parks, beaches, caves, heritage sites</li>
                         <li><strong>Strong transport links:</strong>&nbsp;Tanga Airport and trade corridors</li>
-                        <li><strong>Coastal, calm setting</strong>&nbsp;ideal for wellness, education, or residence</li>
+                        <li><strong>Coastal, calm setting:</strong>&nbsp;Ideal for wellness, education, or residence</li>
                     </ul>
 
                     <div class="links-block">

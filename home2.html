@@ -233,9 +233,10 @@
            SLIDE WRAPPER
         ══════════ */
         .slide-inner {
-            max-width: 980px;
+            max-width: 1400px;
+            width: 82%;
             margin: 0 auto;
-            padding: 48px 52px 90px;
+            padding: 48px 0 90px;
         }
 
         /* ══════════════════════════════
@@ -256,7 +257,7 @@
         .cover-top-bar {
             background: var(--navy-mid);
             border-bottom: 1px solid rgba(255,255,255,0.08);
-            padding: 14px 52px;
+            padding: 14px calc(9% + 8px);
             font-size: 0.75rem;
             font-weight: 700;
             letter-spacing: 0.2em;
@@ -347,8 +348,9 @@
 
         /* PDF-style top title bar — gold text on white with teal rule */
         .slide-header {
-            padding: 28px 52px 0;
-            max-width: 980px;
+            padding: 28px 0 0;
+            max-width: 1400px;
+            width: 82%;
             margin: 0 auto;
         }
         .slide-header .pdf-h1 {
@@ -370,12 +372,11 @@
             list-style: none;
         }
         .highlight-list li {
-            display: flex;
-            gap: 10px;
+            position: relative;
+            padding: 8px 0 8px 18px;
             font-size: 0.88rem;
             line-height: 1.6;
             color: var(--text);
-            padding: 8px 0;
             border-bottom: 1px solid var(--rule);
         }
         .highlight-list li:last-child { border-bottom: none; }
@@ -383,8 +384,9 @@
             content: '•';
             color: var(--gold);
             font-size: 1.1rem;
-            flex-shrink: 0;
-            margin-top: 1px;
+            position: absolute;
+            left: 0;
+            top: 8px;
         }
         .highlight-list li strong { font-weight: 700; }
 
@@ -457,11 +459,12 @@
             letter-spacing: 0.13em;
             text-transform: uppercase;
             color: var(--text);
-            margin-bottom: 5px;
+            margin-bottom: 3px;
+            line-height: 1;
         }
         .infra-block p {
             font-size: 0.88rem;
-            line-height: 1.7;
+            line-height: 1.55;
             color: var(--text);
         }
         .infra-block strong { font-weight: 700; }
@@ -596,8 +599,8 @@
             #slideshow { height: auto; overflow: visible; }
             .slide { position: relative; opacity: 1; pointer-events: all; display: none; }
             .slide.active { display: block; }
-            .slide-inner, .slide-header { padding-left: 20px; padding-right: 20px; }
-            .cover-top-bar { padding: 12px 20px; }
+            .slide-inner, .slide-header { width: 90%; padding-left: 0; padding-right: 0; }
+            .cover-top-bar { padding: 12px 5%; }
             .cover-layout { grid-template-columns: 1fr; }
             .two-col, .three-col, .img-grid-2x2 { grid-template-columns: 1fr; }
             .stats-bar { grid-template-columns: 1fr 1fr; }
