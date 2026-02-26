@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Panori Hotel – Digital Pamphlet</title>
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;1,400&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet" />
+    <style>
+        :root {
+            --gold:      #C9A84C;
+            --gold-light:#E8C97A;
+            --navy:      #0F1F2E;
+            --navy-mid:  #1A3145;
+            --cream:     #F7F3EE;
+            --white:     #FFFFFF;
+            --muted:     #6B8090;
+        }
+
+        *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+        html, body {
+            min-height: 100%;
+            font-family: 'DM Sans', sans-serif;
+            background: var(--navy);
+            color: var(--white);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .page {
+            max-width: 720px;
+            width: 90%;
+            padding: 4rem 2rem;
+            text-align: center;
+        }
+
+        .eyebrow {
+            font-family: 'DM Sans', sans-serif;
+            font-size: 0.75rem;
+            font-weight: 600;
+            letter-spacing: 0.25em;
+            text-transform: uppercase;
+            color: var(--gold);
+            margin-bottom: 1.25rem;
+        }
+
+        h1 {
+            font-family: 'Cormorant Garamond', Georgia, serif;
+            font-size: clamp(2.5rem, 6vw, 4rem);
+            font-weight: 600;
+            line-height: 1.1;
+            color: var(--white);
+            margin-bottom: 0.5rem;
+        }
+
+        .subtitle {
+            font-family: 'Cormorant Garamond', serif;
+            font-style: italic;
+            font-size: 1.15rem;
+            color: var(--gold-light);
+            margin-bottom: 1.75rem;
+        }
+
+        .divider {
+            width: 60px;
+            height: 2px;
+            background: linear-gradient(90deg, transparent, var(--gold), transparent);
+            margin: 0 auto 1.75rem;
+        }
+
+        .intro {
+            font-size: 1rem;
+            line-height: 1.75;
+            color: rgba(255,255,255,0.72);
+            max-width: 520px;
+            margin: 0 auto 3rem;
+        }
+
+        .cards {
+            display: flex;
+            gap: 1.25rem;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+
+        .card {
+            background: var(--navy-mid);
+            border: 1px solid rgba(201,168,76,0.25);
+            border-radius: 12px;
+            padding: 2rem 1.75rem;
+            width: 260px;
+            text-decoration: none;
+            color: var(--white);
+            transition: transform 0.25s ease, border-color 0.25s ease, box-shadow 0.25s ease;
+        }
+
+        .card:hover {
+            transform: translateY(-4px);
+            border-color: var(--gold);
+            box-shadow: 0 12px 32px rgba(0,0,0,0.4);
+        }
+
+        .card-icon {
+            font-size: 2rem;
+            margin-bottom: 0.75rem;
+        }
+
+        .card h2 {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 1.4rem;
+            font-weight: 600;
+            color: var(--gold-light);
+            margin-bottom: 0.5rem;
+        }
+
+        .card p {
+            font-size: 0.875rem;
+            line-height: 1.6;
+            color: rgba(255,255,255,0.6);
+        }
+
+        .card .cta {
+            display: inline-block;
+            margin-top: 1.25rem;
+            font-size: 0.75rem;
+            font-weight: 600;
+            letter-spacing: 0.15em;
+            text-transform: uppercase;
+            color: var(--gold);
+        }
+
+        footer {
+            margin-top: 3.5rem;
+            font-size: 0.75rem;
+            color: rgba(255,255,255,0.25);
+            letter-spacing: 0.05em;
+        }
+    </style>
+</head>
+<body>
+    <div class="page">
+        <p class="eyebrow">Welcome to</p>
+        <h1>Panori Hotel</h1>
+        <p class="subtitle">Tanga, Tanzania</p>
+        <div class="divider"></div>
+        <p class="intro">
+            Discover the elegance and warmth of Panori Hotel through our interactive digital pamphlet.
+            Explore our rooms, facilities, dining, and surroundings — available in two curated visual styles.
+        </p>
+
+        <div class="cards">
+            <a href="home.html" class="card">
+                <div class="card-icon">✨</div>
+                <h2>Modern Edition</h2>
+                <p>A bold, contemporary design with a deep navy and teal accent palette.</p>
+                <span class="cta">View Pamphlet →</span>
+            </a>
+            <a href="home2.html" class="card">
+                <div class="card-icon">🏛️</div>
+                <h2>Classic Edition</h2>
+                <p>A refined, serif-driven experience with a warm cream and gold palette.</p>
+                <span class="cta">View Pamphlet →</span>
+            </a>
+        </div>
+
+        <footer>© 2026 Panori Hotel · Tanga, Tanzania</footer>
+    </div>
+</body>
+</html>
