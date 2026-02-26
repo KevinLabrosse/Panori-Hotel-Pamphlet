@@ -767,7 +767,7 @@
 
                 <div class="contact-box">
                     <span class="label">Contact Us</span>
-                    <a href="/cdn-cgi/l/email-protection#9ad8f6f3f2f8f6fbf2daf8f6f5f8b4f9f5f7"><span class="__cf_email__" data-cfemail="96d4fafffef4faf7fed6f4faf9f4b8f5f9fb">[email&#160;protected]</span></a>
+                    <a href="mailto:info@panorihotel.com">info@panorihotel.com</a>
                 </div>
                 <p class="cta-note">Serious enquiries only. Legal and title documentation available on request.</p>
 
@@ -784,7 +784,7 @@
 
 </div><!-- /slideshow -->
 
-<script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>
+<script>
     const slides = Array.from(document.querySelectorAll('.slide'));
     const totalSlides = slides.length;
     const prevBtn = document.getElementById('prevBtn');
@@ -875,4 +875,13 @@
     });
 
     // Respect URL fragment on load
-    const hash = window.location.has
+    const hash = window.location.hash;
+    if (hash) {
+        const idx = slides.findIndex(s => '#' + s.id === hash);
+        if (idx > 0) goTo(idx);
+    }
+
+    updateUI();
+</script>
+</body>
+</html>
