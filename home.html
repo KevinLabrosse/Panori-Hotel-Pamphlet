@@ -3,33 +3,41 @@
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Panori Hotel – Tanga, Tanzania</title>
-    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;0,700;1,400&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet" />
+    <title>Panori Hotel - Tanga, Tanzania</title>
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;0,700;1,400;1,600&amp;family=DM+Sans:wght@300;400;500;600;700&amp;display=swap" rel="stylesheet" />
     <style>
         :root {
-            --gold:       #C9A84C;
-            --gold-light: #E8C97A;
-            --navy:       #0F1F2E;
-            --navy-mid:   #1A3145;
-            --cream:      #F7F3EE;
-            --slate:      #4A6070;
-            --white:      #FFFFFF;
-            --text:       #1C2B38;
-            --muted:      #6B8090;
-            --border:     rgba(201,168,76,0.35);
+            --gold: #C9A84C;
+            --gold-soft: #E8D39B;
+            --navy: #0F1F2E;
+            --navy-mid: #1A3145;
+            --cream: #F7F3EE;
+            --paper: #FFFDF9;
+            --ink: #271A12;
+            --muted: #647481;
+            --line: rgba(201, 168, 76, 0.34);
+            --shadow: 0 20px 48px rgba(15, 31, 46, 0.14);
         }
 
-        *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+        *, *::before, *::after {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
 
-        html, body {
+        html,
+        body {
             height: 100%;
-            font-family: 'DM Sans', sans-serif;
+            font-family: "DM Sans", sans-serif;
             background: var(--navy);
-            color: var(--text);
+            color: var(--ink);
             overflow: hidden;
         }
 
-        /* ── Slideshow shell ── */
+        button {
+            font: inherit;
+        }
+
         #slideshow {
             position: relative;
             width: 100%;
@@ -41,825 +49,1018 @@
             position: absolute;
             inset: 0;
             overflow-y: auto;
-            background: var(--cream);
+            background:
+                linear-gradient(90deg, rgba(201, 168, 76, 0.08), transparent 36%),
+                var(--cream);
             opacity: 0;
             pointer-events: none;
-            transition: opacity 0.6s ease, transform 0.6s ease;
             transform: translateX(40px);
+            transition: opacity 0.6s ease, transform 0.6s ease;
         }
+
         .slide.active {
             opacity: 1;
             pointer-events: all;
             transform: translateX(0);
         }
-        .slide.exit-left  { transform: translateX(-40px); opacity: 0; }
 
-        /* scrollbar inside slides */
-        .slide::-webkit-scrollbar { width: 5px; }
-        .slide::-webkit-scrollbar-track { background: transparent; }
-        .slide::-webkit-scrollbar-thumb { background: var(--gold); border-radius: 3px; }
+        .slide::-webkit-scrollbar {
+            width: 5px;
+        }
 
-        /* ── Nav arrows ── */
+        .slide::-webkit-scrollbar-track {
+            background: transparent;
+        }
+
+        .slide::-webkit-scrollbar-thumb {
+            background: var(--gold);
+            border-radius: 3px;
+        }
+
         .nav-arrow {
             position: fixed;
             top: 50%;
-            transform: translateY(-50%);
             z-index: 100;
             width: 48px;
             height: 48px;
+            border: 2px solid rgba(201, 168, 76, 0.8);
             border-radius: 50%;
-            border: 2px solid var(--gold);
-            background: rgba(15,31,46,0.75);
-            backdrop-filter: blur(6px);
-            color: var(--gold);
-            font-size: 1.2rem;
+            background: rgba(15, 31, 46, 0.78);
+            color: var(--gold-soft);
             cursor: pointer;
             display: flex;
             align-items: center;
             justify-content: center;
-            transition: background 0.25s, transform 0.25s;
+            transform: translateY(-50%);
+            transition: background 0.24s ease, color 0.24s ease, transform 0.24s ease;
             user-select: none;
         }
-        .nav-arrow:hover { background: var(--gold); color: var(--navy); transform: translateY(-50%) scale(1.08); }
-        .nav-arrow:disabled { opacity: 0.25; cursor: default; pointer-events: none; }
-        #prevBtn { left: 16px; }
-        #nextBtn { right: 16px; }
 
-        /* ── Dot indicators ── */
+        .nav-arrow:hover {
+            background: var(--gold);
+            color: var(--navy);
+            transform: translateY(-50%) scale(1.06);
+        }
+
+        .nav-arrow:disabled {
+            opacity: 0.24;
+            cursor: default;
+            pointer-events: none;
+        }
+
+        #prevBtn {
+            left: 18px;
+        }
+
+        #nextBtn {
+            right: 18px;
+        }
+
         #dots {
             position: fixed;
             bottom: 22px;
             left: 50%;
-            transform: translateX(-50%);
             z-index: 100;
             display: flex;
             gap: 10px;
+            transform: translateX(-50%);
         }
+
         .dot {
-            width: 8px; height: 8px;
-            border-radius: 50%;
+            width: 8px;
+            height: 8px;
             border: 1.5px solid var(--gold);
+            border-radius: 50%;
             background: transparent;
             cursor: pointer;
-            transition: background 0.25s, transform 0.25s;
+            transition: background 0.24s ease, transform 0.24s ease;
         }
-        .dot.active { background: var(--gold); transform: scale(1.3); }
 
-        /* ── Slide counter ── */
+        .dot.active {
+            background: var(--gold);
+            transform: scale(1.35);
+        }
+
         #counter {
             position: fixed;
             top: 18px;
             right: 72px;
             z-index: 100;
-            font-family: 'DM Sans', sans-serif;
-            font-size: 0.75rem;
-            font-weight: 500;
-            letter-spacing: 0.15em;
-            color: var(--gold);
-            background: rgba(15,31,46,0.6);
-            backdrop-filter: blur(6px);
-            padding: 5px 12px;
+            padding: 6px 13px;
+            border: 1px solid var(--line);
             border-radius: 20px;
-            border: 1px solid var(--border);
+            background: rgba(15, 31, 46, 0.68);
+            color: var(--gold-soft);
+            font-size: 0.78rem;
+            font-weight: 600;
+            letter-spacing: 0;
+            backdrop-filter: blur(6px);
         }
 
-        /* ══════════════════════════════
-           SHARED SLIDE COMPONENTS
-        ══════════════════════════════ */
         .slide-inner {
-            max-width: 1400px;
-            width: 82%;
+            width: min(86vw, 1420px);
+            min-height: 100vh;
             margin: 0 auto;
-            padding: 60px 0 100px;
+            padding: 58px 0 92px;
         }
 
-        .slide-label {
-            font-family: 'DM Sans', sans-serif;
-            font-size: 0.68rem;
-            font-weight: 600;
-            letter-spacing: 0.25em;
-            text-transform: uppercase;
-            color: var(--gold);
-            margin-bottom: 10px;
-        }
-
-        .slide-title {
-            font-family: 'Cormorant Garamond', serif;
-            font-size: clamp(2rem, 4vw, 3.2rem);
-            font-weight: 700;
-            line-height: 1.1;
-            color: var(--navy);
-        }
-        .slide-title em {
-            font-style: italic;
-            color: var(--gold);
-        }
-
-        .slide-subtitle {
-            font-family: 'Cormorant Garamond', serif;
-            font-size: clamp(1rem, 2vw, 1.35rem);
-            font-style: italic;
-            color: var(--slate);
-            margin-top: 8px;
-            font-weight: 400;
-        }
-
-        .divider {
-            width: 60px;
-            height: 2px;
-            background: var(--gold);
-            margin: 24px 0;
-        }
-
-        .body-text {
-            font-size: 0.97rem;
-            line-height: 1.8;
-            color: #2E3E4A;
-            max-width: 680px;
-        }
-
-        /* Image placeholder */
-        .img-ph {
-            border: 2px dashed var(--gold);
-            border-radius: 8px;
-            background: rgba(201,168,76,0.04);
+        .text-slide {
             display: flex;
-            flex-direction: column;
             align-items: center;
-            justify-content: center;
-            gap: 8px;
-            color: var(--gold);
-            font-size: 0.75rem;
-            letter-spacing: 0.1em;
-            text-transform: uppercase;
-            font-weight: 600;
-            text-align: center;
-            padding: 16px;
-        }
-        .img-ph svg { opacity: 0.5; }
-
-        /* Grid helpers */
-        .two-col {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 20px;
-        }
-        .three-col {
-            display: grid;
-            grid-template-columns: repeat(3, 1fr);
-            gap: 16px;
-        }
-        .img-grid-2x2 {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 14px;
         }
 
-        /* Highlight pill */
-        .pill-list {
-            display: flex;
-            flex-direction: column;
-            gap: 12px;
-            margin-top: 4px;
+        .deck-content {
+            width: 100%;
         }
-        .pill-item {
-            display: flex;
-            align-items: flex-start;
-            gap: 14px;
-            padding: 14px 18px;
-            background: var(--white);
-            border-radius: 10px;
-            border-left: 3px solid var(--gold);
-            box-shadow: 0 2px 12px rgba(15,31,46,0.06);
-            line-height: 1.4;
-        }
-        .pill-item strong {
-            display: block;
-            font-size: 0.88rem;
-            font-weight: 600;
+
+        .brand-title,
+        .section-title {
             color: var(--navy);
-            margin-bottom: 1px;
-        }
-        .pill-item span {
-            font-size: 0.82rem;
-            color: var(--slate);
-            line-height: 1.4;
-        }
-
-        /* Stats row */
-        .stats-row {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(130px, 1fr));
-            gap: 16px;
-            margin: 28px 0;
-        }
-        .stat-card {
-            background: var(--navy);
-            color: var(--white);
-            border-radius: 10px;
-            padding: 20px 16px;
-            text-align: center;
-        }
-        .stat-card .val {
-            font-family: 'Cormorant Garamond', serif;
-            font-size: 2rem;
+            font-family: "Cormorant Garamond", serif;
             font-weight: 700;
-            color: var(--gold-light);
-            line-height: 1;
-            display: block;
-        }
-        .stat-card .lbl {
-            font-size: 0.72rem;
-            letter-spacing: 0.1em;
-            text-transform: uppercase;
-            color: rgba(255,255,255,0.55);
-            margin-top: 5px;
-            display: block;
+            line-height: 1.04;
+            letter-spacing: 0;
         }
 
-        /* Dark banner */
-        .dark-banner {
-            background: var(--navy);
-            border-radius: 14px;
-            padding: 36px 40px;
-            color: var(--white);
-            margin: 32px 0;
-        }
-        .dark-banner h3 {
-            font-family: 'Cormorant Garamond', serif;
-            font-size: 1.6rem;
-            font-weight: 700;
-            color: var(--gold-light);
-            margin-bottom: 10px;
-        }
-        .dark-banner p {
-            font-size: 0.93rem;
-            line-height: 1.7;
-            color: rgba(255,255,255,0.75);
+        .brand-title {
+            margin-bottom: 34px;
+            font-size: 3.35rem;
         }
 
-        /* Conversion opportunity cards */
-        .opp-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
-            gap: 14px;
-            margin-top: 20px;
-        }
-        .opp-card {
-            background: var(--white);
-            border-radius: 10px;
-            padding: 18px 16px;
-            border-top: 3px solid var(--gold);
-            box-shadow: 0 2px 12px rgba(15,31,46,0.06);
-        }
-        .opp-card h4 {
-            font-size: 0.88rem;
-            font-weight: 600;
-            color: var(--navy);
-            margin-bottom: 6px;
-        }
-        .opp-card p {
-            font-size: 0.78rem;
-            color: var(--slate);
-            line-height: 1.5;
-        }
-
-        /* Infra section */
-        .infra-block {
-            border-left: 3px solid var(--gold);
-            padding-left: 18px;
-            margin-bottom: 24px;
-        }
-        .infra-block h3 {
-            font-family: 'DM Sans', sans-serif;
-            font-size: 0.78rem;
-            font-weight: 600;
-            letter-spacing: 0.15em;
-            text-transform: uppercase;
+        .brand-title .brand {
             color: var(--gold);
-            margin-bottom: 3px;
-            line-height: 1;
+            font-family: "DM Sans", sans-serif;
+            font-weight: 700;
         }
-        .infra-block p {
-            font-size: 0.93rem;
-            line-height: 1.55;
-            color: #2E3E4A;
-        }
-        .infra-block strong { color: var(--navy); }
 
-        /* Why Tanga bullets */
-        .why-list {
+        .brand-title .dash {
+            color: var(--navy);
+            font-family: "DM Sans", sans-serif;
+        }
+
+        .brand-title em {
+            color: #5F5954;
+            font-weight: 600;
+        }
+
+        .section-title {
+            margin-bottom: 22px;
+            font-size: 2.68rem;
+        }
+
+        .subtitle {
+            margin-bottom: 58px;
+            color: var(--ink);
+            font-size: 1.42rem;
+            line-height: 1.45;
+            font-weight: 500;
+        }
+
+        .copy h2 {
+            margin: 0 0 24px;
+            color: var(--navy);
+            font-size: 2.45rem;
+            line-height: 1.12;
+            font-weight: 700;
+        }
+
+        .copy h3 {
+            margin: 40px 0 20px;
+            color: var(--navy);
+            font-size: 2.16rem;
+            line-height: 1.16;
+            font-weight: 700;
+        }
+
+        .copy p {
+            max-width: 1180px;
+            margin-bottom: 28px;
+            color: var(--ink);
+            font-size: 1.42rem;
+            line-height: 1.58;
+        }
+
+        .copy p:last-child {
+            margin-bottom: 0;
+        }
+
+        .copy ul {
+            max-width: 1120px;
+            margin: 22px 0 0;
             list-style: none;
-            margin-top: 16px;
-            display: flex;
-            flex-direction: column;
-            gap: 10px;
         }
-        .why-list li {
+
+        .copy li {
             position: relative;
-            padding: 0 0 0 20px;
-            font-size: 0.92rem;
-            color: #2E3E4A;
-            line-height: 1.5;
+            margin: 0 0 22px;
+            padding-left: 46px;
+            color: var(--ink);
+            font-size: 1.28rem;
+            line-height: 1.42;
         }
-        .why-list li::before {
-            content: '';
+
+        .copy li::before {
+            content: "";
             position: absolute;
-            left: 0;
-            top: 7px;
+            top: 0.62em;
+            left: 10px;
             width: 8px;
             height: 8px;
             border-radius: 50%;
             background: var(--gold);
+            box-shadow: 0 0 0 4px rgba(201, 168, 76, 0.12);
         }
-        .why-list li strong { color: var(--navy); font-weight: 600; }
 
-        /* External links */
-        .links-block { margin-top: 24px; }
-        .links-block h4 {
-            font-size: 0.72rem;
-            font-weight: 600;
-            letter-spacing: 0.2em;
-            text-transform: uppercase;
-            color: var(--gold);
-            margin-bottom: 10px;
+        .copy strong {
+            color: var(--ink);
+            font-weight: 700;
         }
-        .ext-link {
-            display: block;
-            font-size: 0.85rem;
-            color: var(--slate);
-            text-decoration: none;
-            border-bottom: 1px solid rgba(74,96,112,0.2);
-            padding: 7px 0;
-            transition: color 0.2s;
-        }
-        .ext-link:hover { color: var(--gold); }
 
-        /* CTA / contact slide */
-        .cta-wrap {
+        .rule {
+            width: 100%;
+            height: 4px;
+            margin-top: 48px;
+            background: linear-gradient(90deg, var(--gold), #5B6E4D 46%, var(--navy) 100%);
+        }
+
+        .content-with-photos {
+            display: grid;
+            grid-template-columns: minmax(0, 1fr) 280px;
+            gap: 58px;
+            align-items: center;
+        }
+
+        .content-with-photos .copy p {
+            max-width: 990px;
+        }
+
+        .content-with-photos .copy ul {
+            max-width: 980px;
+        }
+
+        .photo-strip {
+            display: grid;
+            gap: 18px;
+            align-self: stretch;
+            align-content: center;
+        }
+
+        .photo-strip .photo-placeholder {
+            min-height: 210px;
+            aspect-ratio: 4 / 3;
+        }
+
+        .photo-strip.tall-bottom .photo-placeholder:last-child {
+            min-height: 260px;
+        }
+
+        .photo-placeholder {
+            position: relative;
+            min-height: 180px;
+            border: 2px dashed rgba(201, 168, 76, 0.75);
+            border-radius: 8px;
+            background:
+                linear-gradient(135deg, rgba(201, 168, 76, 0.08), rgba(15, 31, 46, 0.05)),
+                repeating-linear-gradient(45deg, rgba(255, 255, 255, 0.34) 0 10px, rgba(201, 168, 76, 0.08) 10px 20px);
+            box-shadow: 0 15px 28px rgba(15, 31, 46, 0.18);
+            color: var(--navy);
+            overflow: hidden;
             display: flex;
             flex-direction: column;
             align-items: center;
+            justify-content: center;
+            gap: 7px;
+            padding: 18px;
             text-align: center;
-            padding-top: 20px;
         }
-        .cta-wrap .slide-title { font-size: clamp(1.8rem, 3.5vw, 2.8rem); }
-        .cta-wrap .body-text { max-width: 560px; text-align: center; }
-        .contact-box {
-            margin-top: 32px;
-            background: var(--navy);
-            border-radius: 14px;
-            padding: 36px 48px;
-            display: inline-flex;
-            flex-direction: column;
-            align-items: center;
-            gap: 8px;
-            border: 1px solid var(--border);
-        }
-        .contact-box .label {
-            font-size: 0.72rem;
-            letter-spacing: 0.2em;
-            text-transform: uppercase;
-            color: rgba(255,255,255,0.45);
-        }
-        .contact-box a {
-            font-family: 'Cormorant Garamond', serif;
-            font-size: 1.5rem;
-            font-weight: 600;
-            color: var(--gold-light);
-            text-decoration: none;
-        }
-        .cta-note {
-            margin-top: 18px;
-            font-size: 0.82rem;
-            color: var(--muted);
-            font-style: italic;
-        }
-        .yt-ph { margin-top: 32px; width: 340px; max-width: 90vw; }
 
-        /* ══ SLIDE 1 HERO ══ */
+        .photo-placeholder::before {
+            content: "";
+            width: 34px;
+            height: 34px;
+            border: 2px solid rgba(15, 31, 46, 0.3);
+            border-radius: 7px;
+            background:
+                radial-gradient(circle at 32% 34%, rgba(201, 168, 76, 0.9) 0 3px, transparent 4px),
+                linear-gradient(135deg, transparent 48%, rgba(15, 31, 46, 0.32) 49% 56%, transparent 57%);
+        }
+
+        .slot-name {
+            font-size: 0.84rem;
+            font-weight: 700;
+            line-height: 1.25;
+        }
+
+        .slot-desc {
+            max-width: 24ch;
+            color: var(--muted);
+            font-size: 0.76rem;
+            line-height: 1.28;
+        }
+
+        .missing .slot-name {
+            color: #8A5A16;
+        }
+
         #slide-1 {
             background: var(--navy);
-            color: var(--white);
-        }
-        #slide-1 .slide-inner {
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            min-height: 100vh;
-            padding-top: 0;
-            padding-bottom: 80px;
-        }
-        .hero-layout {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 48px;
-            align-items: center;
-        }
-        .hero-text .slide-label { color: var(--gold); }
-        .hero-text .slide-title { color: var(--white); font-size: clamp(2.2rem, 4vw, 3.5rem); }
-        .hero-text .slide-subtitle { color: rgba(255,255,255,0.6); margin-top: 10px; }
-        .hero-text .divider { margin: 28px 0; }
-        .hero-text .body-text { color: rgba(255,255,255,0.7); font-size: 0.93rem; }
-        .hero-img-grid {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            grid-template-rows: 220px 160px;
-            gap: 12px;
-        }
-        .hero-img-grid .img-ph:first-child {
-            grid-column: 1 / -1;
-        }
-        .hero-img-grid .img-ph {
-            border-color: rgba(201,168,76,0.4);
-            color: rgba(201,168,76,0.6);
+            color: var(--paper);
         }
 
-        /* ══════════ RESPONSIVE ══════════ */
-        @media (max-width: 700px) {
-            html, body { overflow: auto; }
-            #slideshow { height: auto; overflow: visible; }
-            .slide { position: relative; opacity: 1; pointer-events: all; transform: none; display: none; }
-            .slide.active { display: block; }
-            .slide-inner { padding: 48px 0 90px; width: 90%; }
-            .hero-layout, .two-col { grid-template-columns: 1fr; }
-            .hero-img-grid { grid-template-rows: 180px 130px; }
-            .three-col { grid-template-columns: 1fr; }
-            .img-grid-2x2 { grid-template-columns: 1fr; }
-            .opp-grid { grid-template-columns: 1fr 1fr; }
-            #prevBtn { left: 8px; }
-            #nextBtn { right: 8px; }
-            .dark-banner { padding: 24px 20px; }
-            .contact-box { padding: 28px 24px; }
+        #slide-1 .slide-inner {
+            width: 100%;
+            padding: 0;
         }
-        @media (max-width: 420px) {
-            .opp-grid { grid-template-columns: 1fr; }
+
+        .cover-layout {
+            position: relative;
+            min-height: 100vh;
+            overflow: hidden;
+        }
+
+        .cover-backdrop {
+            position: absolute;
+            inset: 0;
+            min-height: 100%;
+            border: 0;
+            border-radius: 0;
+            box-shadow: none;
+            opacity: 0.74;
+        }
+
+        .cover-backdrop::after {
+            content: "";
+            position: absolute;
+            inset: 0;
+            background:
+                linear-gradient(90deg, rgba(15, 31, 46, 0.76), rgba(15, 31, 46, 0.22) 62%, rgba(15, 31, 46, 0.56)),
+                linear-gradient(0deg, rgba(15, 31, 46, 0.8), transparent 46%);
+        }
+
+        .cover-content {
+            position: relative;
+            z-index: 1;
+            display: grid;
+            grid-template-columns: minmax(0, 1fr) 520px;
+            gap: 44px;
+            align-items: end;
+            min-height: 100vh;
+            width: min(88vw, 1480px);
+            margin: 0 auto;
+            padding: 84px 0 86px;
+        }
+
+        .cover-text {
+            max-width: 830px;
+            padding: 36px 40px 40px;
+            border-left: 4px solid var(--gold);
+            background: rgba(22, 13, 7, 0.78);
+            backdrop-filter: blur(3px);
+        }
+
+        .cover-title {
+            color: var(--gold);
+            font-size: 3.35rem;
+            line-height: 1.05;
+            font-weight: 700;
+        }
+
+        .cover-subtitle {
+            max-width: 720px;
+            margin-top: 24px;
+            color: var(--paper);
+            font-size: 1.65rem;
+            line-height: 1.24;
+            font-style: italic;
+            font-weight: 700;
+        }
+
+        .cover-collage {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 14px;
+            align-items: end;
+        }
+
+        .cover-collage .photo-placeholder {
+            min-height: 190px;
+            aspect-ratio: 1.16 / 1;
+            border-color: rgba(232, 211, 155, 0.82);
+            background:
+                linear-gradient(135deg, rgba(232, 211, 155, 0.18), rgba(15, 31, 46, 0.28)),
+                repeating-linear-gradient(45deg, rgba(255, 255, 255, 0.18) 0 10px, rgba(201, 168, 76, 0.12) 10px 20px);
+            color: var(--paper);
+        }
+
+        .cover-collage .photo-placeholder:nth-child(1),
+        .cover-collage .photo-placeholder:nth-child(2) {
+            min-height: 178px;
+        }
+
+        .cover-collage .slot-desc {
+            color: rgba(255, 255, 255, 0.74);
+        }
+
+        #slide-2 .deck-content,
+        #slide-7 .deck-content {
+            padding: 34px 32px 0;
+        }
+
+        #slide-7 .copy p {
+            max-width: 1240px;
+        }
+
+        .photo-collection {
+            display: grid;
+            grid-template-columns: 280px 1fr;
+            gap: 48px;
+            align-items: start;
+        }
+
+        .photo-collection h2 {
+            margin-top: 24px;
+        }
+
+        .collection-grid {
+            display: grid;
+            grid-template-columns: repeat(4, minmax(0, 1fr));
+            grid-template-areas:
+                ". . top-one top-two"
+                "sunny entrance corridor shade"
+                "front pool building room";
+            grid-auto-rows: minmax(176px, auto);
+            gap: 18px;
+            align-items: stretch;
+        }
+
+        .collection-grid .photo-placeholder {
+            min-height: 190px;
+            aspect-ratio: 1 / 1;
+        }
+
+        .collection-grid .wide {
+            aspect-ratio: 4 / 3;
+        }
+
+        .top-one {
+            grid-area: top-one;
+        }
+
+        .top-two {
+            grid-area: top-two;
+        }
+
+        .sunny {
+            grid-area: sunny;
+        }
+
+        .entrance {
+            grid-area: entrance;
+        }
+
+        .corridor {
+            grid-area: corridor;
+        }
+
+        .shade {
+            grid-area: shade;
+        }
+
+        .front {
+            grid-area: front;
+        }
+
+        .pool {
+            grid-area: pool;
+        }
+
+        .building-slot {
+            grid-area: building;
+        }
+
+        .room {
+            grid-area: room;
+        }
+
+        @media (max-width: 1100px) {
+            .slide-inner {
+                width: min(90vw, 980px);
+            }
+
+            .brand-title {
+                font-size: 2.75rem;
+            }
+
+            .section-title,
+            .copy h2 {
+                font-size: 2.25rem;
+            }
+
+            .copy h3 {
+                font-size: 1.92rem;
+            }
+
+            .copy p,
+            .subtitle {
+                font-size: 1.18rem;
+            }
+
+            .copy li {
+                font-size: 1.08rem;
+            }
+
+            .content-with-photos {
+                grid-template-columns: 1fr;
+                gap: 32px;
+            }
+
+            .photo-strip {
+                grid-template-columns: repeat(3, 1fr);
+            }
+
+            .photo-strip .photo-placeholder,
+            .photo-strip.tall-bottom .photo-placeholder:last-child {
+                min-height: 190px;
+            }
+
+            .cover-content {
+                grid-template-columns: 1fr;
+                align-items: center;
+                padding-top: 78px;
+            }
+
+            .cover-collage {
+                max-width: 720px;
+            }
+
+            .photo-collection {
+                grid-template-columns: 1fr;
+            }
+
+            .collection-grid {
+                grid-template-columns: repeat(3, minmax(0, 1fr));
+                grid-template-areas:
+                    ". top-one top-two"
+                    "sunny entrance corridor"
+                    "shade front pool"
+                    "building room .";
+            }
+        }
+
+        @media (max-width: 700px) {
+            html,
+            body {
+                overflow: auto;
+            }
+
+            #slideshow {
+                height: auto;
+                overflow: visible;
+            }
+
+            .slide {
+                position: relative;
+                display: none;
+                opacity: 1;
+                pointer-events: all;
+                transform: none;
+            }
+
+            .slide.active {
+                display: block;
+            }
+
+            .slide-inner {
+                width: 90vw;
+                padding: 48px 0 88px;
+            }
+
+            .nav-arrow {
+                width: 42px;
+                height: 42px;
+            }
+
+            #prevBtn {
+                left: 8px;
+            }
+
+            #nextBtn {
+                right: 8px;
+            }
+
+            #counter {
+                right: 62px;
+            }
+
+            .brand-title {
+                margin-bottom: 24px;
+                font-size: 2.2rem;
+            }
+
+            .section-title,
+            .copy h2 {
+                font-size: 1.88rem;
+            }
+
+            .copy h3 {
+                margin-top: 30px;
+                font-size: 1.58rem;
+            }
+
+            .copy p,
+            .subtitle {
+                margin-bottom: 22px;
+                font-size: 1rem;
+                line-height: 1.62;
+            }
+
+            .copy li {
+                margin-bottom: 16px;
+                padding-left: 30px;
+                font-size: 0.95rem;
+            }
+
+            .copy li::before {
+                left: 4px;
+            }
+
+            #slide-2 .deck-content,
+            #slide-7 .deck-content {
+                padding: 0;
+            }
+
+            .cover-content {
+                width: 90vw;
+                padding: 74px 0 88px;
+            }
+
+            .cover-text {
+                padding: 28px 24px;
+            }
+
+            .cover-title {
+                font-size: 2.2rem;
+            }
+
+            .cover-subtitle {
+                font-size: 1.12rem;
+            }
+
+            .cover-collage,
+            .photo-strip,
+            .collection-grid {
+                grid-template-columns: 1fr;
+                grid-template-areas: none;
+            }
+
+            .collection-grid .photo-placeholder {
+                grid-area: auto;
+            }
+
+            .photo-placeholder,
+            .photo-strip .photo-placeholder,
+            .photo-strip.tall-bottom .photo-placeholder:last-child,
+            .collection-grid .photo-placeholder {
+                min-height: 210px;
+            }
         }
     </style>
 </head>
 <body>
-
-<!-- Navigation -->
 <button class="nav-arrow" id="prevBtn" aria-label="Previous slide">&#8592;</button>
 <button class="nav-arrow" id="nextBtn" aria-label="Next slide">&#8594;</button>
-<div id="dots"></div>
-<div id="counter"></div>
+<div id="dots" aria-label="Slide navigation"></div>
+<div id="counter" aria-live="polite"></div>
 
-<div id="slideshow">
-
-    <!-- ══ SLIDE 1 – Hero / Cover ══ -->
+<main id="slideshow">
     <section class="slide active" id="slide-1" data-index="0">
         <div class="slide-inner">
-            <div class="hero-layout">
-                <div class="hero-text">
-                    <p class="slide-label">For Sale — Tanga, Tanzania</p>
-                    <h1 class="slide-title">Panori <em>Hotel</em></h1>
-                    <p class="slide-subtitle">Reimagine This Coastal Property – Ideal for Boutique Redevelopment or Purpose-Built Use</p>
-                    <div class="divider"></div>
-                    <p class="body-text">A rare opportunity to acquire a large, well-positioned coastal property in one of East Africa's fastest-growing regional cities. Located in the Raskazone area of Tanga — a quiet, tree-lined zone just off the Indian Ocean.</p>
-                </div>
-                <div class="hero-img-grid">
-                    <div class="img-ph" style="height:220px">
-                        <svg width="32" height="32" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><path d="m21 15-5-5L5 21"/></svg>
-                        [INSERT IMAGE: Hotel exterior / aerial]
+            <div class="cover-layout">
+                <figure class="photo-placeholder cover-backdrop">
+                    <span class="slot-name">Panori Photos - Selected/Pool_Large.jpg</span>
+                    <span class="slot-desc">Cover background: pool and thatched restaurant</span>
+                </figure>
+                <div class="cover-content">
+                    <div class="cover-text">
+                        <h1 class="cover-title">PANORI HOTEL - TANGA, TANZANIA</h1>
+                        <p class="cover-subtitle">A High-Performing Coastal Investment with Immediate Income and Significant Upside</p>
                     </div>
-                    <div class="img-ph" style="height:160px">
-                        <svg width="24" height="24" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><path d="m21 15-5-5L5 21"/></svg>
-                        [INSERT IMAGE: Pool area]
-                    </div>
-                    <div class="img-ph" style="height:160px">
-                        <svg width="24" height="24" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><path d="m21 15-5-5L5 21"/></svg>
-                        [INSERT IMAGE: Entrance gate]
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- ══ SLIDE 2 – Property Highlights ══ -->
-    <section class="slide" id="slide-2" data-index="1">
-        <div class="slide-inner">
-            <p class="slide-label">Property Overview</p>
-            <h2 class="slide-title">Flexible Property Investment<br><em>for Overseas Buyers</em></h2>
-            <div class="divider"></div>
-
-            <div class="stats-row">
-                <div class="stat-card"><span class="val">22</span><span class="lbl">Guest Rooms</span></div>
-                <div class="stat-card"><span class="val">5,781</span><span class="lbl">sqm Plot</span></div>
-                <div class="stat-card"><span class="val">99yr</span><span class="lbl">Right of Occupancy</span></div>
-                <div class="stat-card"><span class="val">1977</span><span class="lbl">Title From</span></div>
-            </div>
-
-            <div class="two-col" style="gap:40px; align-items:start; margin-top:12px;">
-                <div class="pill-list">
-                    <div class="pill-item">
-                        <div>
-                            <strong>Full Hospitality Facilities</strong>
-                            <span>Large restaurant/bar, gym, pool, conference hall, and landscaped outdoor areas.</span>
-                        </div>
-                    </div>
-                    <div class="pill-item">
-                        <div>
-                            <strong>Commercial / Hotel Zoning</strong>
-                            <span>Subject to formal approval for alternative uses.</span>
-                        </div>
-                    </div>
-                    <div class="pill-item">
-                        <div>
-                            <strong>Secure Neighbourhood</strong>
-                            <span>Respected area just off Ocean Drive, Raskazone.</span>
-                        </div>
-                    </div>
-                    <div class="pill-item">
-                        <div>
-                            <strong>Self-Sufficient Utilities</strong>
-                            <span>Public utility connections plus on-site well and septic system.</span>
-                        </div>
-                    </div>
-                    <div class="pill-item">
-                        <div>
-                            <strong>Phased or Full Redevelopment</strong>
-                            <span>Suitable for phased renovation, full redevelopment, or partial use conversion.</span>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="img-grid-2x2">
-                    <div class="img-ph" style="height:160px">
-                        <svg width="24" height="24" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><path d="m21 15-5-5L5 21"/></svg>
-                        [INSERT IMAGE: Courtyard / walkway]
-                    </div>
-                    <div class="img-ph" style="height:160px">
-                        <svg width="24" height="24" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><path d="m21 15-5-5L5 21"/></svg>
-                        [INSERT IMAGE: Landscaped grounds]
-                    </div>
-                    <div class="img-ph" style="height:140px">
-                        <svg width="24" height="24" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><path d="m21 15-5-5L5 21"/></svg>
-                        [INSERT IMAGE: Main building]
-                    </div>
-                    <div class="img-ph" style="height:140px">
-                        <svg width="24" height="24" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><path d="m21 15-5-5L5 21"/></svg>
-                        [INSERT IMAGE: Pool]
+                    <div class="cover-collage">
+                        <figure class="photo-placeholder">
+                            <span class="slot-name">Panori Photos - Selected/TopView_Frame.jpg</span>
+                            <span class="slot-desc">Aerial property boundary and ocean</span>
+                        </figure>
+                        <figure class="photo-placeholder">
+                            <span class="slot-name">Panori Photos - Selected/Front_Sunny.jpg</span>
+                            <span class="slot-desc">Sunny front building with palm</span>
+                        </figure>
+                        <figure class="photo-placeholder">
+                            <span class="slot-name">Panori Photos - Selected/Front_Building_Large.jpg</span>
+                            <span class="slot-desc">Front building and red entrance carpet</span>
+                        </figure>
+                        <figure class="photo-placeholder">
+                            <span class="slot-name">Panori Photos - Selected/TopView_Pool.jpg</span>
+                            <span class="slot-desc">Top view of pool and grounds</span>
+                        </figure>
                     </div>
                 </div>
             </div>
         </div>
     </section>
 
-    <!-- ══ SLIDE 3 – Conversion Opportunities ══ -->
-    <section class="slide" id="slide-3" data-index="2">
+    <section class="slide text-slide" id="slide-2" data-index="1">
         <div class="slide-inner">
-            <p class="slide-label">Redevelopment Potential</p>
-            <h2 class="slide-title">Reimagining <em>Panori</em></h2>
-            <p class="slide-subtitle">Conversion Opportunities</p>
-            <div class="divider"></div>
-            <p class="body-text">For buyers not seeking to operate a hotel 'as is', the site offers tremendous potential for redevelopment or repositioning. With its generous plot size, existing structures, and commercial zoning, the following uses could be explored (subject to approvals):</p>
-
-            <div class="opp-grid" style="margin-top:28px;">
-                <div class="opp-card">
-                    <h4>Boutique Serviced Apartments</h4>
-                    <p>Redesign rooms into self-contained flats with common pool and garden spaces.</p>
-                </div>
-                <div class="opp-card">
-                    <h4>Private International School</h4>
-                    <p>Leverage conference hall and existing accommodation for educational purposes.</p>
-                </div>
-                <div class="opp-card">
-                    <h4>Corporate Training Centre</h4>
-                    <p>Adapt layout for meeting rooms, breakout zones, and executive lodging.</p>
-                </div>
-                <div class="opp-card">
-                    <h4>Contractor / NGO Housing Base</h4>
-                    <p>Repurpose for long-stay teams supporting logistics, infrastructure, or medical missions.</p>
-                </div>
-                <div class="opp-card">
-                    <h4>Wellness Retreat or Spa Resort</h4>
-                    <p>Tap into the growing health tourism trend with yoga, detox, massage, and retreat packages.</p>
-                </div>
-                <div class="opp-card">
-                    <h4>Senior Living / Assisted Care</h4>
-                    <p>Coastal setting and tranquil layout ideal for international or regional senior housing.</p>
-                </div>
-                <div class="opp-card">
-                    <h4>Medical Recovery Centre</h4>
-                    <p>Ideal for wellness, post-operative stays, or specialist treatment retreat.</p>
-                </div>
-                <div class="opp-card">
-                    <h4>Cultural Heritage Guesthouse</h4>
-                    <p>Brand as a sustainable, Creole-coastal experience with local tourism partners.</p>
-                </div>
-            </div>
-
-            <div class="three-col" style="margin-top:32px;">
-                <div class="img-ph" style="height:180px;">
-                    <svg width="24" height="24" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><path d="m21 15-5-5L5 21"/></svg>
-                    [INSERT IMAGE: Wellness / spa concept]
-                </div>
-                <div class="img-ph" style="height:180px;">
-                    <svg width="24" height="24" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><path d="m21 15-5-5L5 21"/></svg>
-                    [INSERT IMAGE: Serviced apartments]
-                </div>
-                <div class="img-ph" style="height:180px;">
-                    <svg width="24" height="24" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><path d="m21 15-5-5L5 21"/></svg>
-                    [INSERT IMAGE: School / education use]
-                </div>
+            <div class="deck-content copy">
+                <h1 class="brand-title"><span class="brand">PANORI Hotel</span> <span class="dash">–</span> <em>Tanga, Tanzania</em></h1>
+                <p class="subtitle">A High-Performing Coastal Investment with Immediate Income and Significant Upside</p>
+                <h2>Overview</h2>
+                <p>Panori Hotel presents a compelling investment opportunity in one of Tanzania’s fastest-growing coastal regions. Established in 1990, this well-known, family-operated hotel is located in the sought-after Raskazone area of Tanga, just 3 kilometres from the city centre and moments from the Indian Ocean.</p>
+                <p>Set on a generous, low-density plot, the property offers a rare balance of proven operational performance and future redevelopment potential. With a long-standing reputation, loyal guest base, and consistent trading history, Panori delivers both immediate income and clear scope for value growth.</p>
+                <div class="rule"></div>
             </div>
         </div>
     </section>
 
-    <!-- ══ SLIDE 4 – Tanga Growth Story ══ -->
-    <section class="slide" id="slide-4" data-index="3">
+    <section class="slide text-slide" id="slide-3" data-index="2">
         <div class="slide-inner">
-            <p class="slide-label">Location Intelligence</p>
-            <h2 class="slide-title">Tanga, Tanzania —<br><em>Coastal Growth Hub</em> of East Africa</h2>
-            <p class="slide-subtitle">Strategic Location | Energy Gateway | Trade &amp; Tourism Potential</p>
-            <div class="divider"></div>
-
-            <div class="two-col" style="gap:40px; align-items:start;">
-                <div>
-                    <div class="infra-block">
-                        <h3>Port Expansion &amp; Trade Capacity</h3>
-                        <p>Tanga Port has been upgraded with a <strong>deepened and widened channel</strong>, reduced turnaround times, and enhanced cargo handling, boosting trade and reducing logistics costs. These improvements position Tanga as a <strong>regional maritime hub</strong>, also serving as the export point for oil via EACOP.</p>
-                    </div>
-                    <div class="infra-block">
-                        <h3>EACOP — Transformative Energy Corridor</h3>
-                        <p>The East African Crude Oil Pipeline connects Uganda's oilfields to Tanga, spanning <strong>1,443 km</strong>. Over 80% complete, expected to start exports by <strong>late 2026</strong>. Once operational, it will be the world's longest electrically heated pipeline, transporting <strong>230,000 barrels per day</strong>.</p>
-                    </div>
-                    <div class="infra-block">
-                        <h3>Transport Connectivity &amp; Regional Mobility</h3>
-                        <p>Tanga's transport links are improving with planned upgrades to the <strong>airport</strong>, better <strong>rail connections</strong>, and new <strong>highways</strong> enhancing regional mobility and cross-border trade.</p>
-                    </div>
-                </div>
-                <div style="display:flex; flex-direction:column; gap:16px;">
-                    <div class="img-ph" style="height:220px;">
-                        <svg width="24" height="24" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><path d="m21 15-5-5L5 21"/></svg>
-                        [INSERT IMAGE: EACOP map — Uganda to Tanga]
-                    </div>
-                    <div class="img-ph" style="height:180px;">
-                        <svg width="24" height="24" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><path d="m21 15-5-5L5 21"/></svg>
-                        [INSERT IMAGE: Tanga Port / cargo]
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- ══ SLIDE 5 – Why Tanga, Why Now ══ -->
-    <section class="slide" id="slide-5" data-index="4">
-        <div class="slide-inner">
-            <p class="slide-label">Investment Case</p>
-            <h2 class="slide-title">Why Tanga, <em>Why Now</em></h2>
-            <div class="divider"></div>
-
-            <div class="two-col" style="gap:40px; align-items:start;">
-                <div>
-                    <div class="infra-block">
-                        <h3>Tourism &amp; Island Access: Zanzibar &amp; Pemba</h3>
-                        <p>Tanga's proximity to Zanzibar and Pemba makes it a prime coastal stop. Improved ferry services and tourism development — including nearby <strong>Amboni Caves</strong>, <strong>Saadani National Park</strong>, and beaches — are boosting its tourism appeal.</p>
-                    </div>
-
-                    <div class="dark-banner">
-                        <h3>Growth Meets Lifestyle</h3>
-                        <p>Tanga combines opportunity, connectivity, and natural beauty. For investors targeting an early-mover advantage in a rising East African city, Tanga stands out as one of the best-positioned opportunities today — with growing economic momentum across real estate, hospitality, logistics, and tourism.</p>
-                    </div>
-
-                    <ul class="why-list">
-                        <li><strong>Emerging energy &amp; logistics hub:</strong>&nbsp;EACOP pipeline, port expansion</li>
-                        <li><strong>Industrial demand:</strong>&nbsp;Fuelling long-stay business professional needs</li>
-                        <li><strong>Growing tourism:</strong>&nbsp;Parks, beaches, caves, heritage sites</li>
-                        <li><strong>Strong transport links:</strong>&nbsp;Tanga Airport and trade corridors</li>
-                        <li><strong>Coastal, calm setting:</strong>&nbsp;Ideal for wellness, education, or residence</li>
+            <div class="deck-content content-with-photos">
+                <div class="copy">
+                    <h1 class="brand-title"><span class="brand">PANORI Hotel</span> <span class="dash">–</span> <em>Investment Opportunity Overview</em></h1>
+                    <p>Panori Hotel offers international buyers a chance to acquire a large, well-positioned coastal property in one of East Africa’s fastest-growing regional cities. Located in the Raskazone area of Tanga — a quiet, tree-lined zone just off the Indian Ocean — the property provides scope for both hospitality operations and visionary redevelopment into something new.</p>
+                    <h2>Property Highlights</h2>
+                    <ul>
+                        <li><strong>22 En suite guest rooms,</strong> large restaurant/bar, gym, pool, conference hall, and landscaped outdoor areas.</li>
+                        <li>Plot size: <strong>5,781 sqm (62,235 sq ft)</strong></li>
+                        <li>Title: <strong>99-year Right of Occupancy</strong> from 1977.</li>
+                        <li><strong>Zoning: Commercial / Hotel</strong> – subject to formal approval for alternative uses.</li>
+                        <li><strong>Secure environment</strong> in a respected neighbourhood just off Ocean Drive.</li>
+                        <li><strong>Public utility connections</strong> plus on-site well and septic system.</li>
+                        <li>Suitable for <strong>phased renovation,</strong> full redevelopment, or partial use conversion.</li>
                     </ul>
-
-                    <div class="links-block">
-                        <h4>Further Reading</h4>
-                        <a class="ext-link" href="#" target="_blank">Tanga Port's future as a gateway to the world — The Citizen</a>
-                        <a class="ext-link" href="#" target="_blank">Tanga port now ready to serve neighbouring countries — IPPMedia.com</a>
-                        <a class="ext-link" href="#" target="_blank">Cement Company Signs EPC Contract With China for New Clinker Lines in Mbeya and Tanga</a>
-                        <a class="ext-link" href="#" target="_blank">More Chinese companies to explore investment opportunities in Tanzania — People's Daily Online</a>
-                    </div>
+                    <div class="rule"></div>
                 </div>
-
-                <div style="display:flex;flex-direction:column;gap:16px;">
-                    <div class="img-ph" style="height:200px;">
-                        <svg width="24" height="24" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><path d="m21 15-5-5L5 21"/></svg>
-                        [INSERT IMAGE: Coastal / ocean view near Tanga]
-                    </div>
-                    <div class="img-ph" style="height:160px;">
-                        <svg width="24" height="24" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><path d="m21 15-5-5L5 21"/></svg>
-                        [INSERT IMAGE: Tanga market / street life]
-                    </div>
-                    <div class="img-ph" style="height:150px;">
-                        <svg width="24" height="24" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><path d="m21 15-5-5L5 21"/></svg>
-                        [INSERT IMAGE: Tanga transport / bus station]
-                    </div>
+                <div class="photo-strip">
+                    <figure class="photo-placeholder">
+                        <span class="slot-name">Panori Photos - Selected/Building.jpg</span>
+                        <span class="slot-desc">Two-storey guest-room wing</span>
+                    </figure>
+                    <figure class="photo-placeholder">
+                        <span class="slot-name">Panori Photos - Selected/Entrance_Restaurant_Large.jpg</span>
+                        <span class="slot-desc">Courtyard and restaurant entrance</span>
+                    </figure>
+                    <figure class="photo-placeholder">
+                        <span class="slot-name">Panori Photos - Selected/Swimmingpool.jpg</span>
+                        <span class="slot-desc">Swimming pool and garden edge</span>
+                    </figure>
                 </div>
             </div>
         </div>
     </section>
 
-    <!-- ══ SLIDE 6 – Next Steps / Contact ══ -->
-    <section class="slide" id="slide-6" data-index="5">
+    <section class="slide text-slide" id="slide-4" data-index="3">
         <div class="slide-inner">
-            <div class="cta-wrap">
-                <p class="slide-label">Enquire Today</p>
-                <h2 class="slide-title">Next Steps</h2>
-                <div class="divider" style="margin:20px auto;"></div>
-                <p class="body-text">Viewings and site inspections can be arranged. All legal, title, and site details are available for qualified parties. We're open to serious enquiries from overseas buyers seeking a versatile and high-potential coastal property.</p>
-
-                <div class="contact-box">
-                    <span class="label">Contact Us</span>
-                    <a href="mailto:info@panorihotel.com">info@panorihotel.com</a>
+            <div class="deck-content content-with-photos">
+                <div class="copy">
+                    <h2>Asset Highlights</h2>
+                    <p>Panori Hotel is recognised locally and regionally as a trusted destination for both leisure and corporate travellers. Key strengths include:</p>
+                    <ul>
+                        <li><strong>Prime Coastal Location</strong> – Positioned in the prestigious Raskazone area, close to the beach, port, airport, and key commercial hubs</li>
+                        <li><strong>Established Reputation</strong> – Over 30 years of successful operation with strong brand recognition and repeat business</li>
+                        <li><strong>Loyal Customer Base</strong> – High levels of returning guests driven by personalised, family-style hospitality</li>
+                        <li><strong>Multiple Revenue Streams</strong> – Income from accommodation, food &amp; beverage, conferences, and events</li>
+                        <li><strong>Relaxed, Tranquil Setting</strong> – A calm environment highly valued by business travellers and tourists alike</li>
+                    </ul>
+                    <div class="rule"></div>
                 </div>
-                <p class="cta-note">Serious enquiries only. Legal and title documentation available on request.</p>
-
-                <div class="yt-ph">
-                    <div class="img-ph" style="height:200px; width:100%;">
-                        <svg width="40" height="40" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><polygon points="10 8 16 12 10 16 10 8" fill="currentColor" stroke="none"/></svg>
-                        [INSERT VIDEO THUMBNAIL: YouTube property walkthrough]<br>
-                        <span style="font-size:0.65rem;opacity:0.7;text-transform:none;letter-spacing:0;">Replace with &lt;iframe&gt; embed or linked thumbnail</span>
-                    </div>
+                <div class="photo-strip">
+                    <figure class="photo-placeholder">
+                        <span class="slot-name">Panori Photos - Selected/Building.jpg</span>
+                        <span class="slot-desc">Two-storey guest-room wing</span>
+                    </figure>
+                    <figure class="photo-placeholder">
+                        <span class="slot-name">Panori Photos - Selected/Entrance_Restaurant_Large.jpg</span>
+                        <span class="slot-desc">Courtyard and restaurant entrance</span>
+                    </figure>
+                    <figure class="photo-placeholder">
+                        <span class="slot-name">Panori Photos - Selected/Swimmingpool.jpg</span>
+                        <span class="slot-desc">Swimming pool and garden edge</span>
+                    </figure>
                 </div>
             </div>
         </div>
     </section>
 
-</div><!-- /slideshow -->
+    <section class="slide text-slide" id="slide-5" data-index="4">
+        <div class="slide-inner">
+            <div class="deck-content content-with-photos">
+                <div class="copy">
+                    <h2>Occupancy and Guest Demographics</h2>
+                    <p>Panori Hotel has consistently maintained strong occupancy levels:</p>
+                    <ul>
+                        <li>Average annual <strong>occupancy of 80% - 90%</strong></li>
+                        <li><strong>Peak periods</strong> regularly achieving near or <strong>full occupancy</strong></li>
+                    </ul>
+                    <p>The hotel attracts a diverse and stable client base, including:</p>
+                    <ul>
+                        <li><strong>Corporate and business travellers</strong> linked to port operations, logistics, construction, and energy sectors</li>
+                        <li><strong>International and regional tourists</strong> visiting Tanga and nearby coastal destinations</li>
+                        <li><strong>NGOs</strong> and development organisations operating within the region</li>
+                        <li><strong>Government</strong> and infrastructure <strong>project personnel</strong></li>
+                        <li><strong>Transit travellers</strong> between Zanzibar, Pemba, and mainland Tanzania</li>
+                    </ul>
+                    <p>This well-balanced mix supports year-round demand and operational resilience, reducing reliance on seasonal tourism.</p>
+                    <div class="rule"></div>
+                </div>
+                <div class="photo-strip tall-bottom">
+                    <figure class="photo-placeholder">
+                        <span class="slot-name">Panori Photos - Selected/Front_Buildings.jpg</span>
+                        <span class="slot-desc">Front courtyard buildings and palms</span>
+                    </figure>
+                    <figure class="photo-placeholder">
+                        <span class="slot-name">Panori Photos - Selected/Image 1484.jpg</span>
+                        <span class="slot-desc">Courtyard shade and red walkway</span>
+                    </figure>
+                    <figure class="photo-placeholder missing">
+                        <span class="slot-name">No matching local file found</span>
+                        <span class="slot-desc">Guest room / bed photo from the PDF</span>
+                    </figure>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="slide text-slide" id="slide-6" data-index="5">
+        <div class="slide-inner">
+            <div class="deck-content content-with-photos">
+                <div class="copy">
+                    <h2>Value Enhancement &amp; Repositioning Potential</h2>
+                    <p>While fully operational and well maintained, Panori Hotel offers clear opportunities to increase revenue, enhance positioning, and unlock further value.<br />Strategic initiatives could include:</p>
+                    <ul>
+                        <li>Repositioning the hotel into a higher-tier boutique or lifestyle offering</li>
+                        <li>Expanding and upgrading guest accommodation to meet evolving international standards</li>
+                        <li>Enhancing food and beverage concepts to drive higher spend per guest</li>
+                        <li>Upgrading conference and event facilities to capture corporate demand</li>
+                        <li>Introducing additional leisure or coastal experience offerings</li>
+                        <li>Implementing modern hospitality systems to improve efficiency and guest experience</li>
+                    </ul>
+                    <p>These initiatives provide a clear pathway for both revenue growth and long-term capital appreciation.</p>
+                    <div class="rule"></div>
+                </div>
+                <div class="photo-strip">
+                    <figure class="photo-placeholder">
+                        <span class="slot-name">Panori Photos - Selected/Front_Buildings.jpg</span>
+                        <span class="slot-desc">Main front building and courtyard</span>
+                    </figure>
+                    <figure class="photo-placeholder">
+                        <span class="slot-name">Panori Photos/Image 1754.jpg</span>
+                        <span class="slot-desc">Likely corridor and courtyard view</span>
+                    </figure>
+                    <figure class="photo-placeholder">
+                        <span class="slot-name">Panori Photos - Selected/TopView_Pool.jpg</span>
+                        <span class="slot-desc">Top view of pool and grounds</span>
+                    </figure>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="slide text-slide" id="slide-7" data-index="6">
+        <div class="slide-inner">
+            <div class="deck-content copy">
+                <h2>Additional Information</h2>
+                <p>A summary of the hotel’s recent financial performance is available to serious parties upon request, offering further insight into trading history and operational performance.</p>
+                <h3>Strategic Investment Opportunity</h3>
+                <p>Panori Hotel represents a rare opportunity to acquire a proven, income-generating hotel in one of Tanzania’s fastest-growing coastal regions. With consistently strong occupancy, an established reputation, and a prime location, the business performs today while offering clear scope for meaningful value enhancement..</p>
+                <p>Tanga is undergoing rapid transformation, driven by port expansion, energy infrastructure, and increasing regional activity—positioning the hotel at the centre of a market set for sustained growth in both business and leisure demand.</p>
+                <p>Combining operational stability with genuine repositioning potential, opportunities of this calibre in emerging coastal markets are seldom available.</p>
+                <p>Whether retained as a strong mid-market performer or re-positioned into a more premium hospitality offering, Panori represents a scalable investment with both immediate returns and long-term capital growth.</p>
+                <p>A proven business today — strategically positioned for a significantly more valuable tomorrow..</p>
+                <div class="rule"></div>
+            </div>
+        </div>
+    </section>
+
+    <section class="slide text-slide" id="slide-8" data-index="7">
+        <div class="slide-inner">
+            <div class="deck-content photo-collection">
+                <div class="copy">
+                    <h2>Photo Collection</h2>
+                </div>
+                <div class="collection-grid">
+                    <figure class="photo-placeholder wide top-one">
+                        <span class="slot-name">Panori Photos - Selected/Front_Buildings.jpg</span>
+                        <span class="slot-desc">Top collection image: front buildings</span>
+                    </figure>
+                    <figure class="photo-placeholder wide top-two">
+                        <span class="slot-name">Panori Photos - Selected/Front_Building_Large.jpg</span>
+                        <span class="slot-desc">Likely matching front building crop</span>
+                    </figure>
+                    <figure class="photo-placeholder sunny">
+                        <span class="slot-name">Panori Photos - Selected/Front_Sunny.jpg</span>
+                        <span class="slot-desc">Large left image: sunny exterior</span>
+                    </figure>
+                    <figure class="photo-placeholder entrance">
+                        <span class="slot-name">Panori Photos - Selected/Entrance_Restaurant_Large.jpg</span>
+                        <span class="slot-desc">Courtyard and restaurant entrance</span>
+                    </figure>
+                    <figure class="photo-placeholder corridor">
+                        <span class="slot-name">Panori Photos/Image 1754.jpg</span>
+                        <span class="slot-desc">Likely corridor and courtyard view</span>
+                    </figure>
+                    <figure class="photo-placeholder shade">
+                        <span class="slot-name">Panori Photos - Selected/Image 1484.jpg</span>
+                        <span class="slot-desc">Courtyard shade and red walkway</span>
+                    </figure>
+                    <figure class="photo-placeholder front">
+                        <span class="slot-name">Panori Photos - Selected/Front_Building_Large.jpg</span>
+                        <span class="slot-desc">Front building and red entrance carpet</span>
+                    </figure>
+                    <figure class="photo-placeholder pool">
+                        <span class="slot-name">Panori Photos - Selected/Swimmingpool.jpg</span>
+                        <span class="slot-desc">Swimming pool and garden edge</span>
+                    </figure>
+                    <figure class="photo-placeholder building-slot">
+                        <span class="slot-name">Panori Photos - Selected/Building.jpg</span>
+                        <span class="slot-desc">Two-storey guest-room wing</span>
+                    </figure>
+                    <figure class="photo-placeholder missing room">
+                        <span class="slot-name">No matching local file found</span>
+                        <span class="slot-desc">Guest room / bed photo from the PDF</span>
+                    </figure>
+                </div>
+            </div>
+            <div class="rule"></div>
+        </div>
+    </section>
+</main>
 
 <script>
-    const slides = Array.from(document.querySelectorAll('.slide'));
+    const slides = Array.from(document.querySelectorAll(".slide"));
     const totalSlides = slides.length;
-    const prevBtn = document.getElementById('prevBtn');
-    const nextBtn = document.getElementById('nextBtn');
-    const dotsEl  = document.getElementById('dots');
-    const counter = document.getElementById('counter');
+    const prevBtn = document.getElementById("prevBtn");
+    const nextBtn = document.getElementById("nextBtn");
+    const dotsEl = document.getElementById("dots");
+    const counter = document.getElementById("counter");
 
     let current = 0;
+    let isAnimating = false;
 
-    // Build dots
-    slides.forEach((_, i) => {
-        const d = document.createElement('button');
-        d.className = 'dot' + (i === 0 ? ' active' : '');
-        d.setAttribute('aria-label', `Go to slide ${i+1}`);
-        d.addEventListener('click', () => goTo(i));
-        dotsEl.appendChild(d);
+    slides.forEach((_, index) => {
+        const dot = document.createElement("button");
+        dot.className = "dot" + (index === 0 ? " active" : "");
+        dot.setAttribute("aria-label", `Go to slide ${index + 1}`);
+        dot.addEventListener("click", () => goTo(index));
+        dotsEl.appendChild(dot);
     });
 
     function updateUI() {
-        const dots = dotsEl.querySelectorAll('.dot');
-        dots.forEach((d, i) => d.classList.toggle('active', i === current));
+        dotsEl.querySelectorAll(".dot").forEach((dot, index) => {
+            dot.classList.toggle("active", index === current);
+        });
+
         counter.textContent = `${current + 1} / ${totalSlides}`;
         prevBtn.disabled = current === 0;
         nextBtn.disabled = current === totalSlides - 1;
-        // Update URL fragment
-        history.replaceState(null, '', `#slide-${current + 1}`);
+        history.replaceState(null, "", `#slide-${current + 1}`);
     }
 
-    let isAnimating = false;
-
     function goTo(index) {
-        if (index === current || isAnimating) return;
-        isAnimating = true;
+        if (index === current || isAnimating || index < 0 || index >= totalSlides) return;
 
+        isAnimating = true;
         const direction = index > current ? 1 : -1;
         const outgoing = slides[current];
         const incoming = slides[index];
 
-        // Position incoming off-screen (no transition yet)
-        incoming.style.transition = 'none';
+        incoming.style.transition = "none";
         incoming.style.transform = `translateX(${direction * 60}px)`;
-        incoming.style.opacity = '0';
-        incoming.style.pointerEvents = 'none';
-        incoming.classList.add('active');
+        incoming.style.opacity = "0";
+        incoming.style.pointerEvents = "none";
+        incoming.classList.add("active");
         incoming.scrollTop = 0;
-
-        // Force reflow so the starting position is painted before we animate
         incoming.getBoundingClientRect();
 
-        // Now animate both simultaneously
-        const t = 'opacity 0.5s ease, transform 0.5s ease';
-
-        outgoing.style.transition = t;
+        const transition = "opacity 0.5s ease, transform 0.5s ease";
+        outgoing.style.transition = transition;
         outgoing.style.transform = `translateX(${direction * -60}px)`;
-        outgoing.style.opacity = '0';
+        outgoing.style.opacity = "0";
 
-        incoming.style.transition = t;
-        incoming.style.transform = 'translateX(0)';
-        incoming.style.opacity = '1';
-        incoming.style.pointerEvents = 'all';
+        incoming.style.transition = transition;
+        incoming.style.transform = "translateX(0)";
+        incoming.style.opacity = "1";
+        incoming.style.pointerEvents = "all";
 
         setTimeout(() => {
-            // Clean up outgoing
-            outgoing.classList.remove('active');
-            outgoing.style.transition = 'none';
-            outgoing.style.transform = '';
-            outgoing.style.opacity = '';
-            outgoing.style.pointerEvents = '';
+            outgoing.classList.remove("active");
+            outgoing.style.transition = "";
+            outgoing.style.transform = "";
+            outgoing.style.opacity = "";
+            outgoing.style.pointerEvents = "";
 
-            // Clean up incoming
-            incoming.style.transition = '';
-            incoming.style.transform = '';
-            incoming.style.opacity = '';
+            incoming.style.transition = "";
+            incoming.style.transform = "";
+            incoming.style.opacity = "";
+            incoming.style.pointerEvents = "";
 
             current = index;
             updateUI();
@@ -867,20 +1068,19 @@
         }, 520);
     }
 
-    prevBtn.addEventListener('click', () => { if (current > 0) goTo(current - 1); });
-    nextBtn.addEventListener('click', () => { if (current < totalSlides - 1) goTo(current + 1); });
+    prevBtn.addEventListener("click", () => goTo(current - 1));
+    nextBtn.addEventListener("click", () => goTo(current + 1));
 
-    // Keyboard nav
-    document.addEventListener('keydown', e => {
-        if (e.key === 'ArrowRight' || e.key === 'ArrowDown') { if (current < totalSlides - 1) goTo(current + 1); }
-        if (e.key === 'ArrowLeft'  || e.key === 'ArrowUp')   { if (current > 0) goTo(current - 1); }
+    document.addEventListener("keydown", (event) => {
+        if (event.key === "ArrowRight" || event.key === "ArrowDown") goTo(current + 1);
+        if (event.key === "ArrowLeft" || event.key === "ArrowUp") goTo(current - 1);
     });
 
-    // Respect URL fragment on load
-    const hash = window.location.hash;
-    if (hash) {
-        const idx = slides.findIndex(s => '#' + s.id === hash);
-        if (idx > 0) goTo(idx);
+    const hashIndex = slides.findIndex((slide) => `#${slide.id}` === window.location.hash);
+    if (hashIndex > 0) {
+        slides[0].classList.remove("active");
+        slides[hashIndex].classList.add("active");
+        current = hashIndex;
     }
 
     updateUI();
