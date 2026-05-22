@@ -1,0 +1,1254 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>{title}</title>
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;0,700;1,400;1,600&amp;family=DM+Sans:wght@300;400;500;600;700&amp;display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css" />
+    <style>
+        :root {
+            --gold: #C9A84C;
+            --gold-soft: #E8D39B;
+            --navy: #0F1F2E;
+            --navy-mid: #1A3145;
+            --cream: #F7F3EE;
+            --paper: #FFFDF9;
+            --ink: #271A12;
+            --muted: #647481;
+            --line: rgba(201, 168, 76, 0.34);
+            --shadow: 0 20px 48px rgba(15, 31, 46, 0.14);
+            --slide-width: 80vw;
+            --vh: 1vh;
+            --slide-height: calc(var(--vh) * 100);
+        }
+
+        *, *::before, *::after {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        html,
+        body {
+            height: 100%;
+            font-family: "DM Sans", sans-serif;
+            background: var(--navy);
+            color: var(--ink);
+            overflow: hidden;
+        }
+
+        button {
+            font: inherit;
+        }
+
+        #slideshow {
+            position: relative;
+            width: 100vw;
+            height: var(--slide-height);
+            overflow: hidden;
+            z-index: 1;
+        }
+
+        .swiper-wrapper {
+            height: 100%;
+        }
+
+        .swiper-slide {
+            height: 100%;
+        }
+
+        .slide {
+            overflow-y: auto;
+            overflow-x: hidden;
+            background:
+                linear-gradient(90deg, rgba(201, 168, 76, 0.08), transparent 36%),
+                var(--cream);
+            transform-style: flat;
+            -webkit-overflow-scrolling: touch;
+            overscroll-behavior-y: contain;
+        }
+
+        #slideshow .swiper-slide.slide {
+            overflow-x: hidden !important;
+            overflow-y: auto !important;
+            touch-action: pan-y;
+        }
+
+        .slide::-webkit-scrollbar {
+            width: 5px;
+        }
+
+        .slide::-webkit-scrollbar-track {
+            background: transparent;
+        }
+
+        .slide::-webkit-scrollbar-thumb {
+            background: var(--gold);
+            border-radius: 3px;
+        }
+
+        .nav-arrow {
+            position: fixed;
+            top: 50%;
+            z-index: 2000;
+            width: 48px;
+            height: 48px;
+            border: 2px solid rgba(201, 168, 76, 0.8);
+            border-radius: 50%;
+            background: rgba(15, 31, 46, 0.78);
+            color: var(--gold-soft);
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transform: translateY(-50%);
+            transition: background 0.24s ease, color 0.24s ease, transform 0.24s ease;
+            user-select: none;
+        }
+
+        .nav-arrow:hover {
+            background: var(--gold);
+            color: var(--navy);
+            transform: translateY(-50%) scale(1.06);
+        }
+
+        .nav-arrow:disabled {
+            opacity: 0.24;
+            cursor: default;
+            pointer-events: none;
+        }
+
+        #prevBtn {
+            left: 18px;
+        }
+
+        #nextBtn {
+            right: 18px;
+        }
+
+        #dots {
+            position: fixed;
+            bottom: 22px;
+            left: 50%;
+            z-index: 2000;
+            display: flex;
+            gap: 10px;
+            transform: translateX(-50%);
+        }
+
+        .dot {
+            width: 8px;
+            height: 8px;
+            border: 1.5px solid var(--gold);
+            border-radius: 50%;
+            background: transparent;
+            cursor: pointer;
+            transition: background 0.24s ease, transform 0.24s ease;
+        }
+
+        .dot.active {
+            background: var(--gold);
+            transform: scale(1.35);
+        }
+
+        #counter {
+            position: fixed;
+            top: 18px;
+            right: 72px;
+            z-index: 2000;
+            padding: 6px 13px;
+            border: 1px solid var(--line);
+            border-radius: 20px;
+            background: rgba(15, 31, 46, 0.68);
+            color: var(--gold-soft);
+            font-size: 0.78rem;
+            font-weight: 600;
+            letter-spacing: 0;
+            backdrop-filter: blur(6px);
+        }
+
+        .slide-inner {
+            width: min(var(--slide-width), 1420px);
+            min-height: var(--slide-height);
+            margin: 0 auto;
+            padding: 6vh 0 10vh;
+        }
+
+        .slide.compact .slide-inner {
+            padding: 4vh 0 7vh;
+            min-height: auto;
+        }
+
+        .text-slide {
+            display: flex;
+            align-items: flex-start;
+        }
+
+        .deck-content {
+            width: 100%;
+        }
+
+        .brand-title,
+        .section-title {
+            color: var(--navy);
+            font-family: "Cormorant Garamond", serif;
+            font-weight: 700;
+            line-height: 1.04;
+            letter-spacing: 0;
+        }
+
+        .brand-title {
+            margin-bottom: 34px;
+            font-size: clamp(2.2rem, 3.2vw, 3.35rem);
+        }
+
+        .brand-title .brand {
+            color: var(--gold);
+            font-family: "DM Sans", sans-serif;
+            font-weight: 700;
+        }
+
+        .brand-title .dash {
+            color: var(--navy);
+            font-family: "DM Sans", sans-serif;
+        }
+
+        .brand-title em {
+            color: #5F5954;
+            font-weight: 600;
+        }
+
+        .section-title {
+            margin-bottom: 22px;
+            font-size: clamp(1.8rem, 2.6vw, 2.68rem);
+        }
+
+        .subtitle {
+            margin-bottom: 58px;
+            color: var(--ink);
+            font-size: clamp(1.05rem, 1.6vw, 1.42rem);
+            line-height: 1.45;
+            font-weight: 500;
+        }
+
+        .copy h2 {
+            margin: 0 0 24px;
+            color: var(--navy);
+            font-size: clamp(1.8rem, 2.5vw, 2.45rem);
+            line-height: 1.12;
+            font-weight: 700;
+        }
+
+        .copy h3 {
+            margin: 40px 0 20px;
+            color: var(--navy);
+            font-size: clamp(1.6rem, 2.2vw, 2.16rem);
+            line-height: 1.16;
+            font-weight: 700;
+        }
+
+        .copy p {
+            max-width: 1180px;
+            margin-bottom: 28px;
+            color: var(--ink);
+            font-size: clamp(1.02rem, 1.55vw, 1.42rem);
+            line-height: 1.58;
+        }
+
+        .copy p:last-child {
+            margin-bottom: 0;
+        }
+
+        .copy ul {
+            max-width: 1120px;
+            margin: 22px 0 0;
+            list-style: none;
+        }
+
+        .copy li {
+            position: relative;
+            margin: 0 0 22px;
+            padding-left: 46px;
+            color: var(--ink);
+            font-size: clamp(0.98rem, 1.4vw, 1.28rem);
+            line-height: 1.42;
+        }
+
+        .copy li::before {
+            content: "";
+            position: absolute;
+            top: 0.62em;
+            left: 10px;
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background: var(--gold);
+            box-shadow: 0 0 0 4px rgba(201, 168, 76, 0.12);
+        }
+
+        .copy strong {
+            color: var(--ink);
+            font-weight: 700;
+        }
+
+        .rule {
+            width: 100%;
+            height: 4px;
+            margin-top: 48px;
+            background: linear-gradient(90deg, var(--gold), #5B6E4D 46%, var(--navy) 100%);
+        }
+
+        .content-with-photos {
+            display: grid;
+            grid-template-columns: minmax(0, 1fr) 280px;
+            gap: 58px;
+            align-items: center;
+        }
+
+        .content-with-photos .copy p {
+            max-width: 990px;
+        }
+
+        .content-with-photos .copy ul {
+            max-width: 980px;
+        }
+
+        .photo-strip {
+            display: grid;
+            gap: 18px;
+            align-self: stretch;
+            align-content: center;
+        }
+
+        .photo-strip .photo-placeholder {
+            min-height: 210px;
+            aspect-ratio: 4 / 3;
+        }
+
+        .photo-strip.tall-bottom .photo-placeholder:last-child {
+            min-height: 260px;
+        }
+
+        .photo-placeholder {
+            position: relative;
+            min-height: 180px;
+            border: 2px dashed rgba(201, 168, 76, 0.75);
+            border-radius: 8px;
+            background:
+                linear-gradient(135deg, rgba(201, 168, 76, 0.08), rgba(15, 31, 46, 0.05)),
+                repeating-linear-gradient(45deg, rgba(255, 255, 255, 0.34) 0 10px, rgba(201, 168, 76, 0.08) 10px 20px);
+            box-shadow: 0 15px 28px rgba(15, 31, 46, 0.18);
+            color: var(--navy);
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            gap: 7px;
+            padding: 18px;
+            text-align: center;
+        }
+
+        .photo-placeholder::before {
+            content: "";
+            width: 34px;
+            height: 34px;
+            border: 2px solid rgba(15, 31, 46, 0.3);
+            border-radius: 7px;
+            background:
+                radial-gradient(circle at 32% 34%, rgba(201, 168, 76, 0.9) 0 3px, transparent 4px),
+                linear-gradient(135deg, transparent 48%, rgba(15, 31, 46, 0.32) 49% 56%, transparent 57%);
+        }
+
+        .photo-placeholder.has-image {
+            padding: 12px;
+            border: 0;
+            background: var(--navy);
+            justify-content: flex-end;
+            align-items: flex-start;
+        }
+
+        .photo-placeholder.has-image::before {
+            display: none;
+        }
+
+        .photo-placeholder.has-image::after {
+            content: "";
+            position: absolute;
+            inset: 45% 0 0;
+            z-index: 1;
+            background: linear-gradient(0deg, rgba(15, 31, 46, 0.72), transparent);
+            pointer-events: none;
+        }
+
+        .mapped-photo {
+            position: absolute;
+            inset: 0;
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .slot-name {
+            position: relative;
+            z-index: 2;
+            font-size: 0.84rem;
+            font-weight: 700;
+            line-height: 1.25;
+        }
+
+        .slot-desc {
+            position: relative;
+            z-index: 2;
+            max-width: 24ch;
+            color: var(--muted);
+            font-size: 0.76rem;
+            line-height: 1.28;
+        }
+
+        .photo-placeholder.has-image .slot-name,
+        .photo-placeholder.has-image .slot-desc {
+            display: none;
+        }
+
+        .missing .slot-name {
+            color: #8A5A16;
+        }
+
+        #slide-1 {
+            background: var(--navy);
+            color: var(--paper);
+        }
+
+        #slide-1 .slide-inner {
+            width: 100%;
+            padding: 0;
+        }
+
+        .cover-layout {
+            position: relative;
+            min-height: 100vh;
+            overflow: hidden;
+        }
+
+        .cover-backdrop {
+            position: absolute;
+            inset: 0;
+            min-height: 100%;
+            border: 0;
+            border-radius: 0;
+            box-shadow: none;
+            opacity: 0.74;
+        }
+
+        .cover-backdrop::after {
+            content: "";
+            position: absolute;
+            inset: 0;
+            z-index: 1;
+            background:
+                linear-gradient(90deg, rgba(15, 31, 46, 0.76), rgba(15, 31, 46, 0.22) 62%, rgba(15, 31, 46, 0.56)),
+                linear-gradient(0deg, rgba(15, 31, 46, 0.8), transparent 46%);
+        }
+
+        .cover-backdrop .slot-name,
+        .cover-backdrop .slot-desc {
+            display: none;
+        }
+
+        .cover-content {
+            position: relative;
+            z-index: 1;
+            display: grid;
+            grid-template-columns: minmax(0, 1fr) 520px;
+            gap: 44px;
+            align-items: end;
+            min-height: var(--slide-height);
+            width: min(86vw, 1480px);
+            margin: 0 auto;
+            padding: 9vh 0;
+        }
+
+        .cover-text {
+            max-width: 830px;
+            padding: 36px 40px 40px;
+            border-left: 4px solid var(--gold);
+            background: rgba(22, 13, 7, 0.78);
+            backdrop-filter: blur(3px);
+        }
+
+        .cover-title {
+            color: var(--gold);
+            font-size: clamp(2.2rem, 3.2vw, 3.35rem);
+            line-height: 1.05;
+            font-weight: 700;
+        }
+
+        .cover-subtitle {
+            max-width: 720px;
+            margin-top: 24px;
+            color: var(--paper);
+            font-size: clamp(1.1rem, 1.8vw, 1.65rem);
+            line-height: 1.24;
+            font-style: italic;
+            font-weight: 700;
+        }
+
+        .start-btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            margin-top: 28px;
+            padding: 12px 28px;
+            border-radius: 999px;
+            border: 1px solid var(--gold);
+            background: linear-gradient(135deg, rgba(201, 168, 76, 0.18), rgba(15, 31, 46, 0.86));
+            color: var(--paper);
+            font-size: 1rem;
+            font-weight: 600;
+            letter-spacing: 0.02em;
+            cursor: pointer;
+            transition: transform 0.2s ease, box-shadow 0.2s ease, background 0.2s ease;
+        }
+
+        .start-btn:hover {
+            transform: translateY(-1px);
+            box-shadow: 0 12px 28px rgba(15, 31, 46, 0.25);
+            background: linear-gradient(135deg, rgba(201, 168, 76, 0.4), rgba(15, 31, 46, 0.9));
+        }
+
+        .cover-collage {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 14px;
+            align-items: end;
+        }
+
+        .cover-collage .photo-placeholder {
+            min-height: 190px;
+            aspect-ratio: 1.16 / 1;
+            border-color: rgba(232, 211, 155, 0.82);
+            background:
+                linear-gradient(135deg, rgba(232, 211, 155, 0.18), rgba(15, 31, 46, 0.28)),
+                repeating-linear-gradient(45deg, rgba(255, 255, 255, 0.18) 0 10px, rgba(201, 168, 76, 0.12) 10px 20px);
+            color: var(--paper);
+        }
+
+        .cover-collage .photo-placeholder:nth-child(1),
+        .cover-collage .photo-placeholder:nth-child(2) {
+            min-height: 178px;
+        }
+
+        .cover-collage .slot-desc {
+            color: rgba(255, 255, 255, 0.74);
+        }
+
+        #slide-2 .deck-content,
+        #slide-7 .deck-content {
+            padding: 34px 32px 0;
+        }
+
+        #slide-7 .copy p {
+            max-width: 1240px;
+        }
+
+        .photo-collection {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 28px;
+            align-items: start;
+        }
+
+        .collection-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 18px;
+            width: 100%;
+        }
+
+        .photo-collection h2 {
+            margin-top: 24px;
+        }
+
+        .collection-grid {
+            display: grid;
+            grid-template-columns: repeat(5, minmax(0, 1fr));
+            grid-auto-flow: row dense;
+            grid-auto-rows: minmax(190px, auto);
+            gap: 18px;
+            align-items: stretch;
+        }
+
+        .collection-grid .photo-placeholder {
+            min-height: 190px;
+            aspect-ratio: 1 / 1;
+            grid-area: auto;
+        }
+
+        .collection-grid .wide {
+            aspect-ratio: 4 / 3;
+        }
+
+        .top-one {
+            grid-area: top-one;
+        }
+
+        .top-two {
+            grid-area: top-two;
+        }
+
+        .sunny {
+            grid-area: sunny;
+        }
+
+        .entrance {
+            grid-area: entrance;
+        }
+
+        .corridor {
+            grid-area: corridor;
+        }
+
+        .shade {
+            grid-area: shade;
+        }
+
+        .front {
+            grid-area: front;
+        }
+
+        .pool {
+            grid-area: pool;
+        }
+
+        .building-slot {
+            grid-area: building;
+        }
+
+        .room {
+            grid-area: room;
+        }
+
+        @media (max-width: 1100px) {
+            .slide-inner {
+                width: min(88vw, 980px);
+            }
+
+            .brand-title {
+                font-size: 2.75rem;
+            }
+
+            .section-title,
+            .copy h2 {
+                font-size: 2.25rem;
+            }
+
+            .copy h3 {
+                font-size: 1.92rem;
+            }
+
+            .copy p,
+            .subtitle {
+                font-size: 1.18rem;
+            }
+
+            .copy li {
+                font-size: 1.08rem;
+            }
+
+            .content-with-photos {
+                grid-template-columns: 1fr;
+                gap: 32px;
+            }
+
+            .photo-strip {
+                grid-template-columns: repeat(3, 1fr);
+            }
+
+            .photo-strip .photo-placeholder,
+            .photo-strip.tall-bottom .photo-placeholder:last-child {
+                min-height: 190px;
+            }
+
+            .cover-content {
+                grid-template-columns: 1fr;
+                align-items: center;
+                padding-top: 78px;
+            }
+
+            .cover-collage {
+                max-width: 720px;
+            }
+
+            .photo-collection {
+                grid-template-columns: 1fr;
+            }
+
+            .collection-grid {
+                grid-template-columns: repeat(3, minmax(0, 1fr));
+                grid-template-areas:
+                    ". top-one top-two"
+                    "sunny entrance corridor"
+                    "shade front pool"
+                    "building room .";
+            }
+        }
+
+        @media (max-width: 700px) {
+            html,
+            body {
+                overflow: auto;
+            }
+
+            #slideshow {
+                height: var(--slide-height);
+            }
+
+            .slide-inner {
+                width: 90vw;
+                padding: 6vh 0 10vh;
+            }
+
+            .nav-arrow {
+                width: 42px;
+                height: 42px;
+            }
+
+            #prevBtn {
+                left: 8px;
+            }
+
+            #nextBtn {
+                right: 8px;
+            }
+
+            #counter {
+                right: 62px;
+            }
+
+            .brand-title {
+                margin-bottom: 24px;
+                font-size: 2.2rem;
+            }
+
+            .section-title,
+            .copy h2 {
+                font-size: 1.88rem;
+            }
+
+            .copy h3 {
+                margin-top: 30px;
+                font-size: 1.58rem;
+            }
+
+            .copy p,
+            .subtitle {
+                margin-bottom: 22px;
+                font-size: 1rem;
+                line-height: 1.62;
+            }
+
+            .copy li {
+                margin-bottom: 16px;
+                padding-left: 30px;
+                font-size: 0.95rem;
+            }
+
+            .copy li::before {
+                left: 4px;
+            }
+
+            #slide-2 .deck-content,
+            #slide-7 .deck-content {
+                padding: 0;
+            }
+
+            .cover-content {
+                width: 90vw;
+                padding: 7vh 0 9vh;
+            }
+
+            .cover-text {
+                padding: 28px 24px;
+            }
+
+            .cover-title {
+                font-size: 2.2rem;
+            }
+
+            .cover-subtitle {
+                font-size: 1.12rem;
+            }
+
+            .cover-collage,
+            .photo-strip,
+            .collection-grid {
+                grid-template-columns: 1fr;
+                grid-template-areas: none;
+            }
+
+            .collection-grid .photo-placeholder {
+                grid-area: auto;
+            }
+
+            .photo-placeholder,
+            .photo-strip .photo-placeholder,
+            .photo-strip.tall-bottom .photo-placeholder:last-child,
+            .collection-grid .photo-placeholder {
+                min-height: 210px;
+            }
+        }
+
+        @media (orientation: landscape) and (max-width: 900px) {
+            :root {
+                --slide-width: 86vw;
+            }
+
+            .cover-content {
+                grid-template-columns: minmax(0, 1fr) 1fr;
+                align-items: center;
+            }
+        }
+    
+        /* Weebly theme hooks: mandatory theme tags are kept outside the pamphlet UI. */
+        .weebly-template-hooks {
+            position: absolute;
+            left: -10000px;
+            top: auto;
+            width: 1px;
+            height: 1px;
+            overflow: hidden;
+        }
+
+        .weebly-footer-slot {
+            position: fixed;
+            right: 12px;
+            bottom: 4px;
+            z-index: 2200;
+            max-width: min(360px, 70vw);
+            color: rgba(232, 211, 155, 0.7);
+            font-size: 10px;
+            line-height: 1.3;
+            text-align: right;
+            pointer-events: auto;
+        }
+
+        .weebly-footer-slot * {
+            color: inherit;
+            font-size: inherit;
+            line-height: inherit;
+        }
+    </style>
+</head>
+<body>
+<!--
+    Weebly custom-theme adaptation.
+    Based on home.html, but with Weebly mandatory theme tags and flat image paths.
+    Upload referenced image files to the Weebly theme Files tab / root of the theme ZIP.
+-->
+<div class="weebly-template-hooks" aria-hidden="true">
+    <div class="weebly-site-title-hook">{title}</div>
+    <nav class="weebly-menu-hook">{menu}</nav>
+    <main class="weebly-content-hook">{content}</main>
+</div>
+<div class="weebly-footer-slot">{footer}</div>
+<button class="nav-arrow" id="prevBtn" aria-label="Previous slide">&#8592;</button>
+<button class="nav-arrow" id="nextBtn" aria-label="Next slide">&#8594;</button>
+<div id="dots" aria-label="Slide navigation"></div>
+<div id="counter" aria-live="polite"></div>
+
+<main class="swiper" id="slideshow">
+    <div class="swiper-wrapper">
+        <!-- Slide 1 placeholder -->
+        <div class="swiper-slide slide" id="slide-1" data-index="0">
+            <div class="slide-inner">
+                <div class="cover-layout">
+                    <figure class="photo-placeholder cover-backdrop has-image">
+                        <img class="mapped-photo" src="Pool_Large.jpg" alt="Pool_Large.jpg" />
+                        <span class="slot-name">Pool_Large.jpg</span>
+                        <span class="slot-desc">Cover background: pool and thatched restaurant</span>
+                    </figure>
+                    <div class="cover-content">
+                        <div class="cover-text">
+                            <h1 class="cover-title">PANORI HOTEL - TANGA, TANZANIA</h1>
+                            <p class="cover-subtitle">A High-Performing Coastal Investment with Immediate Income and Significant Upside</p>
+                        </div>
+                        <div class="cover-collage">
+                            <figure class="photo-placeholder has-image">
+                                <img class="mapped-photo" src="TopView_Frame.jpg" alt="TopView_Frame.jpg" />
+                                <span class="slot-name">TopView_Frame.jpg</span>
+                                <span class="slot-desc">Aerial property boundary and ocean</span>
+                            </figure>
+                            <figure class="photo-placeholder has-image">
+                                <img class="mapped-photo" src="Front_Sunny.jpg" alt="Front_Sunny.jpg" />
+                                <span class="slot-name">Front_Sunny.jpg</span>
+                                <span class="slot-desc">Sunny front building with palm</span>
+                            </figure>
+                            <figure class="photo-placeholder has-image">
+                                <img class="mapped-photo" src="Front_Building_Large.jpg" alt="Front_Building_Large.jpg" />
+                                <span class="slot-name">Front_Building_Large.jpg</span>
+                                <span class="slot-desc">Front building and red entrance carpet</span>
+                            </figure>
+                            <figure class="photo-placeholder has-image">
+                                <img class="mapped-photo" src="TopView_Pool.jpg" alt="TopView_Pool.jpg" />
+                                <span class="slot-name">TopView_Pool.jpg</span>
+                                <span class="slot-desc">Top view of pool and grounds</span>
+                            </figure>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 2 placeholder -->
+        <div class="swiper-slide slide text-slide" id="slide-2" data-index="1">
+            <div class="slide-inner">
+                <div class="deck-content copy">
+                    <h1 class="brand-title"><span class="brand">PANORI Hotel</span> <span class="dash">–</span> <em>Tanga, Tanzania</em></h1>
+                    <p class="subtitle">A High-Performing Coastal Investment with Immediate Income and Significant Upside</p>
+                    <h2>Overview</h2>
+                    <p>Panori Hotel presents a compelling investment opportunity in one of Tanzania’s fastest-growing coastal regions. Established in 1990, this well-known, family-operated hotel is located in the sought-after Raskazone area of Tanga, just 3 kilometres from the city centre and moments from the Indian Ocean.</p>
+                    <p>Set on a generous, low-density plot, the property offers a rare balance of proven operational performance and future redevelopment potential. With a long-standing reputation, loyal guest base, and consistent trading history, Panori delivers both immediate income and clear scope for value growth.</p>
+                    <div class="rule"></div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 3 placeholder -->
+        <div class="swiper-slide slide text-slide compact" id="slide-3" data-index="2">
+            <div class="slide-inner">
+                <div class="deck-content content-with-photos">
+                    <div class="copy">
+                        <h1 class="brand-title"><span class="brand">PANORI Hotel</span> <span class="dash">–</span> <em>Investment Opportunity Overview</em></h1>
+                        <p>Panori Hotel offers international buyers a chance to acquire a large, well-positioned coastal property in one of East Africa’s fastest-growing regional cities. Located in the Raskazone area of Tanga — a quiet, tree-lined zone just off the Indian Ocean — the property provides scope for both hospitality operations and visionary redevelopment into something new.</p>
+                        <h2>Property Highlights</h2>
+                        <ul>
+                            <li><strong>22 En suite guest rooms,</strong> large restaurant/bar, gym, pool, conference hall, and landscaped outdoor areas.</li>
+                            <li>Plot size: <strong>5,781 sqm (62,235 sq ft)</strong></li>
+                            <li>Title: <strong>99-year Right of Occupancy</strong> from 1977.</li>
+                            <li><strong>Zoning: Commercial / Hotel</strong> – subject to formal approval for alternative uses.</li>
+                            <li><strong>Secure environment</strong> in a respected neighbourhood just off Ocean Drive.</li>
+                            <li><strong>Public utility connections</strong> plus on-site well and septic system.</li>
+                            <li>Suitable for <strong>phased renovation,</strong> full redevelopment, or partial use conversion.</li>
+                        </ul>
+                        <div class="rule"></div>
+                    </div>
+                    <div class="photo-strip">
+                        <figure class="photo-placeholder has-image">
+                            <img class="mapped-photo" src="Building.jpg" alt="Building.jpg" />
+                            <span class="slot-name">Building.jpg</span>
+                            <span class="slot-desc">Two-storey guest-room wing</span>
+                        </figure>
+                        <figure class="photo-placeholder has-image">
+                            <img class="mapped-photo" src="Entrance_Restaurant_Large.jpg" alt="Entrance_Restaurant_Large.jpg" />
+                            <span class="slot-name">Entrance_Restaurant_Large.jpg</span>
+                            <span class="slot-desc">Courtyard and restaurant entrance</span>
+                        </figure>
+                        <figure class="photo-placeholder has-image">
+                            <img class="mapped-photo" src="Swimmingpool.jpg" alt="Swimmingpool.jpg" />
+                            <span class="slot-name">Swimmingpool.jpg</span>
+                            <span class="slot-desc">Swimming pool and garden edge</span>
+                        </figure>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 4 placeholder -->
+        <div class="swiper-slide slide text-slide" id="slide-4" data-index="3">
+            <div class="slide-inner">
+                <div class="deck-content content-with-photos">
+                    <div class="copy">
+                        <h2>Asset Highlights</h2>
+                        <p>Panori Hotel is recognised locally and regionally as a trusted destination for both leisure and corporate travellers. Key strengths include:</p>
+                        <ul>
+                            <li><strong>Prime Coastal Location</strong> – Positioned in the prestigious Raskazone area, close to the beach, port, airport, and key commercial hubs</li>
+                            <li><strong>Established Reputation</strong> – Over 30 years of successful operation with strong brand recognition and repeat business</li>
+                            <li><strong>Loyal Customer Base</strong> – High levels of returning guests driven by personalised, family-style hospitality</li>
+                            <li><strong>Multiple Revenue Streams</strong> – Income from accommodation, food &amp; beverage, conferences, and events</li>
+                            <li><strong>Relaxed, Tranquil Setting</strong> – A calm environment highly valued by business travellers and tourists alike</li>
+                        </ul>
+                        <div class="rule"></div>
+                    </div>
+                    <div class="photo-strip">
+                        <figure class="photo-placeholder has-image">
+                            <img class="mapped-photo" src="Building.jpg" alt="Building.jpg" />
+                            <span class="slot-name">Building.jpg</span>
+                            <span class="slot-desc">Two-storey guest-room wing</span>
+                        </figure>
+                        <figure class="photo-placeholder has-image">
+                            <img class="mapped-photo" src="Entrance_Restaurant_Large.jpg" alt="Entrance_Restaurant_Large.jpg" />
+                            <span class="slot-name">Entrance_Restaurant_Large.jpg</span>
+                            <span class="slot-desc">Courtyard and restaurant entrance</span>
+                        </figure>
+                        <figure class="photo-placeholder has-image">
+                            <img class="mapped-photo" src="Swimmingpool.jpg" alt="Swimmingpool.jpg" />
+                            <span class="slot-name">Swimmingpool.jpg</span>
+                            <span class="slot-desc">Swimming pool and garden edge</span>
+                        </figure>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 5 placeholder -->
+        <div class="swiper-slide slide text-slide compact" id="slide-5" data-index="4">
+            <div class="slide-inner">
+                <div class="deck-content content-with-photos">
+                    <div class="copy">
+                        <h2>Occupancy and Guest Demographics</h2>
+                        <p>Panori Hotel has consistently maintained strong occupancy levels:</p>
+                        <ul>
+                            <li>Average annual <strong>occupancy of 80% - 90%</strong></li>
+                            <li><strong>Peak periods</strong> regularly achieving near or <strong>full occupancy</strong></li>
+                        </ul>
+                        <p>The hotel attracts a diverse and stable client base, including:</p>
+                        <ul>
+                            <li><strong>Corporate and business travellers</strong> linked to port operations, logistics, construction, and energy sectors</li>
+                            <li><strong>International and regional tourists</strong> visiting Tanga and nearby coastal destinations</li>
+                            <li><strong>NGOs</strong> and development organisations operating within the region</li>
+                            <li><strong>Government</strong> and infrastructure <strong>project personnel</strong></li>
+                            <li><strong>Transit travellers</strong> between Zanzibar, Pemba, and mainland Tanzania</li>
+                        </ul>
+                        <p>This well-balanced mix supports year-round demand and operational resilience, reducing reliance on seasonal tourism.</p>
+                        <div class="rule"></div>
+                    </div>
+                    <div class="photo-strip">
+                        <figure class="photo-placeholder missing">
+                            <span class="slot-name">No matching local file found</span>
+                            <span class="slot-desc">Guest room / bed photo from the PDF</span>
+                        </figure>
+                        <figure class="photo-placeholder has-image">
+                            <img class="mapped-photo" src="Image 1484.jpg" alt="Image 1484.jpg" />
+                            <span class="slot-name">Image 1484.jpg</span>
+                            <span class="slot-desc">Courtyard shade and red walkway</span>
+                        </figure>
+                        <figure class="photo-placeholder missing">
+                            <span class="slot-name">No matching local file found</span>
+                            <span class="slot-desc">Guest room / bed photo from the PDF</span>
+                        </figure>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 6 placeholder -->
+        <div class="swiper-slide slide text-slide compact" id="slide-6" data-index="5">
+            <div class="slide-inner">
+                <div class="deck-content content-with-photos">
+                    <div class="copy">
+                        <h2>Value Enhancement &amp; Repositioning Potential</h2>
+                        <p>While fully operational and well-maintained, Panori Hotel offers clear opportunities to increase revenue, enhance positioning, and unlock further value.<br />Strategic initiatives could include:</p>
+                        <ul>
+                            <li>Repositioning the hotel into a higher-tier boutique or lifestyle offering</li>
+                            <li>Expanding and upgrading guest accommodation to meet evolving international standards</li>
+                            <li>Enhancing food and beverage concepts to drive higher spend per guest</li>
+                            <li>Upgrading conference and event facilities to capture corporate demand</li>
+                            <li>Introducing additional leisure or coastal experience offerings</li>
+                            <li>Implementing modern hospitality systems to improve efficiency and guest experience</li>
+                        </ul>
+                        <p>These initiatives provide a clear pathway for both revenue growth and long-term capital appreciation.</p>
+                        <div class="rule"></div>
+                    </div>
+                    <div class="photo-strip">
+                        <figure class="photo-placeholder has-image">
+                            <img class="mapped-photo" src="Front_Buildings.jpg" alt="Front_Buildings.jpg" />
+                            <span class="slot-name">Front_Buildings.jpg</span>
+                            <span class="slot-desc">Main front building and courtyard</span>
+                        </figure>
+                        <figure class="photo-placeholder missing">
+                            <span class="slot-name">No matching local file found</span>
+                            <span class="slot-desc">Guest room / bed photo from the PDF</span>
+                        </figure>
+                        <figure class="photo-placeholder missing">
+                            <span class="slot-name">No matching local file found</span>
+                            <span class="slot-desc">Guest room / bed photo from the PDF</span>
+                        </figure>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 7 placeholder -->
+        <div class="swiper-slide slide text-slide compact" id="slide-7" data-index="6">
+            <div class="slide-inner">
+                <div class="deck-content copy">
+                    <h2>Additional Information</h2>
+                    <p>A summary of the hotel’s recent financial performance is available to serious parties upon request, offering further insight into trading history and operational performance.</p>
+                    <h3>Strategic Investment Opportunity</h3>
+                    <p>Panori Hotel represents a rare opportunity to acquire a proven, income-generating hotel in one of Tanzania’s fastest-growing coastal regions. With consistently strong occupancy, an established reputation, and a prime location, the business performs today while offering clear scope for meaningful value enhancement.</p>
+                    <p>Tanga is undergoing rapid transformation, driven by port expansion, energy infrastructure, and increasing regional activity—positioning the hotel at the centre of a market set for sustained growth in both business and leisure demand.</p>
+                    <p>Combining operational stability with genuine repositioning potential, opportunities of this calibre in emerging coastal markets are seldom available.</p>
+                    <p>Whether retained as a strong mid-market performer or re-positioned into a more premium hospitality offering, Panori represents a scalable investment with both immediate returns and long-term capital growth.</p>
+                    <p>A proven business today — strategically positioned for a significantly more valuable tomorrow.</p>
+                    <div class="rule"></div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 8 placeholder -->
+        <div class="swiper-slide slide text-slide" id="slide-8" data-index="7">
+            <div class="slide-inner">
+                <div class="deck-content photo-collection">
+                    <div class="copy">
+                        <div class="collection-header">
+                            <h2>Photo Collection</h2>
+                            <button class="start-btn" id="startBtn" type="button">Start</button>
+                        </div>
+                    </div>
+                    <div class="collection-grid">
+                        <figure class="photo-placeholder top-one has-image">
+                            <img class="mapped-photo" src="Front_Buildings.jpg" alt="Front_Buildings.jpg" />
+                            <span class="slot-name">Front_Buildings.jpg</span>
+                            <span class="slot-desc">Top collection image: front buildings</span>
+                        </figure>
+                        <figure class="photo-placeholder missing">
+                            <span class="slot-name">No matching local file found</span>
+                            <span class="slot-desc">Guest room / bed photo from the PDF</span>
+                        </figure>
+                        <figure class="photo-placeholder sunny has-image">
+                            <img class="mapped-photo" src="Front_Sunny.jpg" alt="Front_Sunny.jpg" />
+                            <span class="slot-name">Front_Sunny.jpg</span>
+                            <span class="slot-desc">Large left image: sunny exterior</span>
+                        </figure>
+                        <figure class="photo-placeholder entrance has-image">
+                            <img class="mapped-photo" src="Entrance_Restaurant_Large.jpg" alt="Entrance_Restaurant_Large.jpg" />
+                            <span class="slot-name">Entrance_Restaurant_Large.jpg</span>
+                            <span class="slot-desc">Courtyard and restaurant entrance</span>
+                        </figure>
+                        <figure class="photo-placeholder missing">
+                            <span class="slot-name">No matching local file found</span>
+                            <span class="slot-desc">Guest room / bed photo from the PDF</span>
+                        </figure>
+                        <figure class="photo-placeholder shade has-image">
+                            <img class="mapped-photo" src="Image 1484.jpg" alt="Image 1484.jpg" />
+                            <span class="slot-name">Image 1484.jpg</span>
+                            <span class="slot-desc">Courtyard shade and red walkway</span>
+                        </figure>
+                        <figure class="photo-placeholder front has-image">
+                            <img class="mapped-photo" src="Front_Building_Large.jpg" alt="Front_Building_Large.jpg" />
+                            <span class="slot-name">Front_Building_Large.jpg</span>
+                            <span class="slot-desc">Front building and red entrance carpet</span>
+                        </figure>
+                        <figure class="photo-placeholder pool has-image">
+                            <img class="mapped-photo" src="Swimmingpool.jpg" alt="Swimmingpool.jpg" />
+                            <span class="slot-name">Swimmingpool.jpg</span>
+                            <span class="slot-desc">Swimming pool and garden edge</span>
+                        </figure>
+                        <figure class="photo-placeholder building-slot has-image">
+                            <img class="mapped-photo" src="Building.jpg" alt="Building.jpg" />
+                            <span class="slot-name">Building.jpg</span>
+                            <span class="slot-desc">Two-storey guest-room wing</span>
+                        </figure>
+                        <figure class="photo-placeholder missing room">
+                            <span class="slot-name">No matching local file found</span>
+                            <span class="slot-desc">Guest room / bed photo from the PDF</span>
+                        </figure>
+                    </div>
+                </div>
+                <div class="rule"></div>
+            </div>
+        </div>
+    </div>
+</main>
+
+<script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
+<script>
+    const slides = Array.from(document.querySelectorAll(".swiper-slide"));
+    const totalSlides = slides.length;
+    const prevBtn = document.getElementById("prevBtn");
+    const nextBtn = document.getElementById("nextBtn");
+    const dotsEl = document.getElementById("dots");
+    const counter = document.getElementById("counter");
+    const startBtn = document.getElementById("startBtn");
+
+    const setViewportVars = () => {
+        document.documentElement.style.setProperty("--vh", `${window.innerHeight * 0.01}px`);
+    };
+
+    setViewportVars();
+    window.addEventListener("resize", setViewportVars);
+    window.addEventListener("orientationchange", setViewportVars);
+
+    slides.forEach((_, index) => {
+        const dot = document.createElement("button");
+        dot.className = "dot" + (index === 0 ? " active" : "");
+        dot.setAttribute("aria-label", `Go to slide ${index + 1}`);
+        dot.addEventListener("click", () => swiper.slideTo(index));
+        dotsEl.appendChild(dot);
+    });
+
+    const swiper = new Swiper("#slideshow", {
+        speed: 720,
+        effect: "creative",
+        grabCursor: true,
+        allowTouchMove: true,
+        touchStartPreventDefault: false,
+        keyboard: {
+            enabled: true,
+            onlyInViewport: false,
+        },
+        creativeEffect: {
+            perspective: false,
+            shadowPerProgress: true,
+            prev: {
+                shadow: true,
+                translate: ["-100%", 0, 0],
+                opacity: 0.82,
+            },
+            next: {
+                shadow: true,
+                translate: ["100%", 0, 0],
+                opacity: 0.9,
+            },
+        },
+        on: {
+            slideChange() {
+                updateUI(this.activeIndex);
+                const activeSlide = slides[this.activeIndex];
+                if (activeSlide) {
+                    activeSlide.scrollTop = 0;
+                }
+            },
+            resize() {
+                updateUI(this.activeIndex);
+            },
+            init() {
+                const activeSlide = slides[this.activeIndex];
+                if (activeSlide) {
+                    activeSlide.scrollTop = 0;
+                }
+            },
+        },
+    });
+
+    function updateUI(index) {
+        dotsEl.querySelectorAll(".dot").forEach((dot, dotIndex) => {
+            dot.classList.toggle("active", dotIndex === index);
+        });
+
+        counter.textContent = `${index + 1} / ${totalSlides}`;
+        prevBtn.disabled = index === 0;
+        nextBtn.disabled = index === totalSlides - 1;
+        history.replaceState(null, "", `#slide-${index + 1}`);
+    }
+
+    prevBtn.addEventListener("click", () => swiper.slidePrev());
+    nextBtn.addEventListener("click", () => swiper.slideNext());
+
+    if (startBtn) {
+        startBtn.addEventListener("click", () => swiper.slideTo(0));
+    }
+
+    const hashIndex = slides.findIndex((slide) => `#${slide.id}` === window.location.hash);
+    if (hashIndex > -1) {
+        swiper.slideTo(hashIndex, 0);
+    }
+
+    updateUI(swiper.activeIndex);
+</script>
+</body>
+</html>
