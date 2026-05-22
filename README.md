@@ -1,1 +1,0 @@
-# Panori-Hotel-Pamphlet
